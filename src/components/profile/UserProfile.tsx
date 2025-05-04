@@ -1,11 +1,10 @@
-
 import { User, UserRole } from "@/contexts/AuthContext";
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
 } from "@/components/ui/card";
 
 interface UserProfileProps {
@@ -18,7 +17,9 @@ export const UserProfile = ({ user }: UserProfileProps) => {
       <Card>
         <CardHeader>
           <CardTitle>Informasi Pribadi</CardTitle>
-          <CardDescription>Detail akun dan informasi kontak Anda.</CardDescription>
+          <CardDescription>
+            Detail akun dan informasi kontak Anda.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -33,13 +34,19 @@ export const UserProfile = ({ user }: UserProfileProps) => {
             <div>
               <p className="text-sm font-medium text-gray-500">Tipe Akun</p>
               <p className="text-base capitalize">
-                {user.role === "wisatawan" ? "Wisatawan" : 
-                 user.role === "pemandu" ? "Pemandu Lokal" :
-                 user.role === "pengelola" ? "Pengelola Wisata" : "Admin"}
+                {user.role === "wisatawan"
+                  ? "Wisatawan"
+                  : user.role === "pemandu"
+                    ? "Pemandu Lokal"
+                    : user.role === "pengelola"
+                      ? "Pengelola Wisata"
+                      : "Admin"}
               </p>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">Tanggal Bergabung</p>
+              <p className="text-sm font-medium text-gray-500">
+                Tanggal Bergabung
+              </p>
               <p className="text-base">Mei 2023</p>
             </div>
           </div>
@@ -51,10 +58,15 @@ export const UserProfile = ({ user }: UserProfileProps) => {
         <Card>
           <CardHeader>
             <CardTitle>Riwayat Perjalanan</CardTitle>
-            <CardDescription>Riwayat perjalanan Anda bersama Jelajah Nusantara.</CardDescription>
+            <CardDescription>
+              Riwayat perjalanan Anda bersama MalukuTrip.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-500 italic">Anda belum melakukan perjalanan. Jelajahi destinasi menarik dan buat reservasi sekarang!</p>
+            <p className="text-gray-500 italic">
+              Anda belum melakukan perjalanan. Jelajahi destinasi menarik dan
+              buat reservasi sekarang!
+            </p>
           </CardContent>
         </Card>
       )}
@@ -63,7 +75,9 @@ export const UserProfile = ({ user }: UserProfileProps) => {
         <Card>
           <CardHeader>
             <CardTitle>Informasi Pemandu</CardTitle>
-            <CardDescription>Detail profil Anda sebagai pemandu lokal.</CardDescription>
+            <CardDescription>
+              Detail profil Anda sebagai pemandu lokal.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -86,7 +100,9 @@ export const UserProfile = ({ user }: UserProfileProps) => {
         <Card>
           <CardHeader>
             <CardTitle>Informasi Pengelola Wisata</CardTitle>
-            <CardDescription>Detail bisnis dan lokasi wisata yang Anda kelola.</CardDescription>
+            <CardDescription>
+              Detail bisnis dan lokasi wisata yang Anda kelola.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -94,11 +110,15 @@ export const UserProfile = ({ user }: UserProfileProps) => {
               <p className="text-base">Pesona Wisata Indonesia</p>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">Lokasi Operasi</p>
+              <p className="text-sm font-medium text-gray-500">
+                Lokasi Operasi
+              </p>
               <p className="text-base">Bali, Indonesia</p>
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">Jumlah Destinasi</p>
+              <p className="text-sm font-medium text-gray-500">
+                Jumlah Destinasi
+              </p>
               <p className="text-base">3 destinasi</p>
             </div>
           </CardContent>
@@ -109,7 +129,9 @@ export const UserProfile = ({ user }: UserProfileProps) => {
         <Card>
           <CardHeader>
             <CardTitle>Informasi Admin</CardTitle>
-            <CardDescription>Detail akses sistem dan hak kelola.</CardDescription>
+            <CardDescription>
+              Detail akses sistem dan hak kelola.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>

@@ -9,7 +9,16 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { Building, ChevronDown, Home, Map, Search, Settings, User, Users } from "lucide-react";
+import {
+  Building,
+  ChevronDown,
+  Home,
+  Map,
+  Search,
+  Settings,
+  User,
+  Users,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,21 +29,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAuthStore } from "@/stores/authStore";
 
 export function Navbar() {
-  const { user, isAuthenticated, logout } = useAuth();
-  
+  const { user, isAuthenticated, logout } = useAuthStore();
+
   const getDashboardLink = () => {
     if (!user) return "/dashboard";
-    
-    switch(user.role) {
-      case "pemandu": return "/guide-dashboard";
-      case "pengelola": return "/manager-dashboard";
-      case "admin": return "/admin";
-      default: return "/dashboard";
+
+    switch (user.role) {
+      case "pemandu":
+        return "/guide-dashboard";
+      case "pengelola":
+        return "/manager-dashboard";
+      case "admin":
+        return "/admin";
+      default:
+        return "/dashboard";
     }
   };
-  
+
   return (
     <div className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
@@ -42,7 +56,9 @@ export function Navbar() {
           <div className="bg-jelajah-blue p-1 rounded-lg">
             <Map className="h-6 w-6 text-white" />
           </div>
-          <span className="font-bold text-xl text-jelajah-dark">Jelajah Nusantara</span>
+          <span className="font-bold text-xl text-jelajah-dark">
+            MalukuTrip
+          </span>
         </Link>
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList>
@@ -57,7 +73,9 @@ export function Navbar() {
                           to={destination.href}
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
                         >
-                          <div className="text-sm font-medium leading-none">{destination.title}</div>
+                          <div className="text-sm font-medium leading-none">
+                            {destination.title}
+                          </div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             {destination.description}
                           </p>
@@ -69,16 +87,22 @@ export function Navbar() {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link to="/explore" className={cn(
-                "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-              )}>
+              <Link
+                to="/explore"
+                className={cn(
+                  "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50",
+                )}
+              >
                 Explore
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link to="/guides" className={cn(
-                "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-              )}>
+              <Link
+                to="/guides"
+                className={cn(
+                  "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50",
+                )}
+              >
                 Pemandu Lokal
               </Link>
             </NavigationMenuItem>
@@ -99,7 +123,11 @@ export function Navbar() {
           {isAuthenticated && user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="rounded-full h-8 w-8 p-0">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full h-8 w-8 p-0"
+                >
                   <Avatar>
                     <AvatarImage src={user.avatar} alt={user.name} />
                     <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
@@ -116,11 +144,19 @@ export function Navbar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to={getDashboardLink()} className="cursor-pointer">
-                    {user.role === 'admin' ? <Settings className="mr-2 h-4 w-4" /> : <User className="mr-2 h-4 w-4" />}
+                    {user.role === "admin" ? (
+                      <Settings className="mr-2 h-4 w-4" />
+                    ) : (
+                      <User className="mr-2 h-4 w-4" />
+                    )}
                     <span>
-                      {user.role === 'admin' ? 'Admin Panel' : 
-                       user.role === 'pemandu' ? 'Dashboard Pemandu' : 
-                       user.role === 'pengelola' ? 'Dashboard Pengelola' : 'Dashboard Saya'}
+                      {user.role === "admin"
+                        ? "Admin Panel"
+                        : user.role === "pemandu"
+                          ? "Dashboard Pemandu"
+                          : user.role === "pengelola"
+                            ? "Dashboard Pengelola"
+                            : "Dashboard Saya"}
                     </span>
                   </Link>
                 </DropdownMenuItem>
@@ -131,8 +167,8 @@ export function Navbar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                
-                <DropdownMenuItem 
+
+                <DropdownMenuItem
                   onClick={logout}
                   className="text-red-600 cursor-pointer focus:bg-red-50 focus:text-red-600"
                 >
@@ -174,21 +210,33 @@ export function Navbar() {
             <Home className="h-5 w-5 mb-1" />
             Beranda
           </Link>
-          <Link to="/explore" className="flex flex-col items-center px-3 py-1 text-xs">
+          <Link
+            to="/explore"
+            className="flex flex-col items-center px-3 py-1 text-xs"
+          >
             <Map className="h-5 w-5 mb-1" />
             Explore
           </Link>
-          <Link to="/search" className="flex flex-col items-center px-3 py-1 text-xs">
+          <Link
+            to="/search"
+            className="flex flex-col items-center px-3 py-1 text-xs"
+          >
             <Search className="h-5 w-5 mb-1" />
             Cari
           </Link>
           {isAuthenticated && user ? (
-            <Link to="/profile" className="flex flex-col items-center px-3 py-1 text-xs">
+            <Link
+              to="/profile"
+              className="flex flex-col items-center px-3 py-1 text-xs"
+            >
               <User className="h-5 w-5 mb-1" />
               Profil
             </Link>
           ) : (
-            <Link to="/login" className="flex flex-col items-center px-3 py-1 text-xs">
+            <Link
+              to="/login"
+              className="flex flex-col items-center px-3 py-1 text-xs"
+            >
               <User className="h-5 w-5 mb-1" />
               Masuk
             </Link>
@@ -202,32 +250,38 @@ export function Navbar() {
 const destinations = [
   {
     title: "Bali",
-    description: "Pulau Dewata dengan pantai indah, budaya kaya, dan pemandangan alam yang menakjubkan.",
-    href: "/explore/bali"
+    description:
+      "Pulau Dewata dengan pantai indah, budaya kaya, dan pemandangan alam yang menakjubkan.",
+    href: "/explore/bali",
   },
   {
     title: "Yogyakarta",
-    description: "Kota budaya dengan candi Borobudur, Prambanan, dan Keraton yang megah.",
-    href: "/explore/yogyakarta"
+    description:
+      "Kota budaya dengan candi Borobudur, Prambanan, dan Keraton yang megah.",
+    href: "/explore/yogyakarta",
   },
   {
     title: "Raja Ampat",
-    description: "Surga bawah laut dengan keanekaragaman hayati laut terkaya di dunia.",
-    href: "/explore/raja-ampat"
+    description:
+      "Surga bawah laut dengan keanekaragaman hayati laut terkaya di dunia.",
+    href: "/explore/raja-ampat",
   },
   {
     title: "Labuan Bajo",
-    description: "Gerbang menuju Taman Nasional Komodo dan pulau-pulau eksotis.",
-    href: "/explore/labuan-bajo"
+    description:
+      "Gerbang menuju Taman Nasional Komodo dan pulau-pulau eksotis.",
+    href: "/explore/labuan-bajo",
   },
   {
     title: "Lombok",
-    description: "Pantai-pantai indah di Gili dan Gunung Rinjani yang menantang untuk didaki.",
-    href: "/explore/lombok"
+    description:
+      "Pantai-pantai indah di Gili dan Gunung Rinjani yang menantang untuk didaki.",
+    href: "/explore/lombok",
   },
   {
     title: "Bandung",
-    description: "Kota dengan suhu sejuk, kuliner lezat, dan pemandangan alam yang indah.",
-    href: "/explore/bandung"
-  }
+    description:
+      "Kota dengan suhu sejuk, kuliner lezat, dan pemandangan alam yang indah.",
+    href: "/explore/bandung",
+  },
 ];

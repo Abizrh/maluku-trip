@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -49,11 +48,11 @@ import { toast } from "sonner";
 const AdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("dashboard");
-  
+
   const handleAction = (action, itemId, type) => {
     toast.success(`${action} ${type} dengan ID ${itemId}`);
   };
-  
+
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
@@ -66,45 +65,45 @@ const AdminDashboard = () => {
             <span className="font-semibold text-lg">Admin Panel</span>
           </div>
         </div>
-        
+
         <div className="flex-1 overflow-auto py-4">
           <nav className="px-3 space-y-1">
-            <button 
+            <button
               onClick={() => setActiveTab("dashboard")}
               className={`flex w-full items-center py-3 px-4 rounded-md ${activeTab === "dashboard" ? "bg-gray-800 font-medium" : "hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"}`}
             >
               <Home size={18} className="mr-3" />
               <span>Dashboard</span>
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab("users")}
               className={`flex w-full items-center py-3 px-4 rounded-md ${activeTab === "users" ? "bg-gray-800 font-medium" : "hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"}`}
             >
               <Users size={18} className="mr-3" />
               <span>Pengguna</span>
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab("destinations")}
               className={`flex w-full items-center py-3 px-4 rounded-md ${activeTab === "destinations" ? "bg-gray-800 font-medium" : "hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"}`}
             >
               <Building size={18} className="mr-3" />
               <span>Destinasi</span>
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab("transactions")}
               className={`flex w-full items-center py-3 px-4 rounded-md ${activeTab === "transactions" ? "bg-gray-800 font-medium" : "hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"}`}
             >
               <CreditCard size={18} className="mr-3" />
               <span>Transaksi</span>
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab("reports")}
               className={`flex w-full items-center py-3 px-4 rounded-md ${activeTab === "reports" ? "bg-gray-800 font-medium" : "hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"}`}
             >
               <FileText size={18} className="mr-3" />
               <span>Laporan</span>
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab("settings")}
               className={`flex w-full items-center py-3 px-4 rounded-md ${activeTab === "settings" ? "bg-gray-800 font-medium" : "hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"}`}
             >
@@ -113,11 +112,14 @@ const AdminDashboard = () => {
             </button>
           </nav>
         </div>
-        
+
         <div className="p-5 border-t border-gray-700">
           <div className="flex items-center">
             <Avatar className="h-9 w-9 mr-3">
-              <AvatarImage src="https://randomuser.me/api/portraits/men/21.jpg" alt="Admin" />
+              <AvatarImage
+                src="https://randomuser.me/api/portraits/men/21.jpg"
+                alt="Admin"
+              />
               <AvatarFallback>AD</AvatarFallback>
             </Avatar>
             <div>
@@ -125,13 +127,16 @@ const AdminDashboard = () => {
               <div className="text-sm text-gray-400">Super Admin</div>
             </div>
           </div>
-          <a href="#" className="mt-4 flex items-center py-2 px-3 rounded-md hover:bg-gray-800 text-gray-300 hover:text-white transition-colors">
+          <a
+            href="#"
+            className="mt-4 flex items-center py-2 px-3 rounded-md hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
+          >
             <Settings size={18} className="mr-3" />
             <span>Pengaturan</span>
           </a>
         </div>
       </aside>
-      
+
       {/* Main Content */}
       <div className="flex-1 md:ml-64">
         {/* Top Bar */}
@@ -144,40 +149,34 @@ const AdminDashboard = () => {
           </div>
           <div className="relative max-w-xs">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-            <Input 
-              type="search" 
-              placeholder="Cari pengguna, destinasi..." 
-              className="pl-8" 
+            <Input
+              type="search"
+              placeholder="Cari pengguna, destinasi..."
+              className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
-        
+
         <main className="p-6">
-          {activeTab === "dashboard" && (
-            <DashboardContent />
-          )}
-          
+          {activeTab === "dashboard" && <DashboardContent />}
+
           {activeTab === "users" && (
             <UsersContent handleAction={handleAction} />
           )}
-          
+
           {activeTab === "destinations" && (
             <DestinationsContent handleAction={handleAction} />
           )}
-          
+
           {activeTab === "transactions" && (
             <TransactionsContent handleAction={handleAction} />
           )}
-          
-          {activeTab === "reports" && (
-            <ReportsContent />
-          )}
-          
-          {activeTab === "settings" && (
-            <SettingsContent />
-          )}
+
+          {activeTab === "reports" && <ReportsContent />}
+
+          {activeTab === "settings" && <SettingsContent />}
         </main>
       </div>
     </div>
@@ -239,9 +238,9 @@ const DashboardContent = () => {
               <span className="text-2xl font-bold mr-2">4.8</span>
               <div className="flex text-amber-500">
                 {[...Array(5)].map((_, i) => (
-                  <Star 
-                    key={i} 
-                    size={16} 
+                  <Star
+                    key={i}
+                    size={16}
                     fill={i < 4 ? "currentColor" : "none"}
                     stroke={i === 4 ? "currentColor" : "currentColor"}
                     strokeWidth={i === 4 ? 2 : 0}
@@ -250,21 +249,17 @@ const DashboardContent = () => {
                 ))}
               </div>
             </div>
-            <p className="text-xs text-gray-500">
-              Berdasarkan 8,452 ulasan
-            </p>
+            <p className="text-xs text-gray-500">Berdasarkan 8,452 ulasan</p>
           </CardContent>
         </Card>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <Card className="lg:col-span-2">
           <CardHeader className="pb-3 flex flex-row items-center justify-between">
             <div>
               <CardTitle>Tren Pengguna & Pendapatan</CardTitle>
-              <CardDescription>
-                Pertumbuhan 6 bulan terakhir
-              </CardDescription>
+              <CardDescription>Pertumbuhan 6 bulan terakhir</CardDescription>
             </div>
             <div className="flex items-center space-x-2">
               <Button variant="outline" size="sm">
@@ -277,19 +272,21 @@ const DashboardContent = () => {
             <div className="h-[300px] flex items-center justify-center">
               <LineChart size={80} className="text-gray-300" />
               <div className="ml-4 text-gray-500">
-                <h3 className="font-medium">Data Grafik Pengguna & Pendapatan</h3>
-                <p className="text-sm">Menampilkan tren pengguna dan pendapatan per bulan</p>
+                <h3 className="font-medium">
+                  Data Grafik Pengguna & Pendapatan
+                </h3>
+                <p className="text-sm">
+                  Menampilkan tren pengguna dan pendapatan per bulan
+                </p>
               </div>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Distribusi Pengguna</CardTitle>
-            <CardDescription>
-              Berdasarkan tipe pengguna
-            </CardDescription>
+            <CardDescription>Berdasarkan tipe pengguna</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[200px] flex items-center justify-center mb-4">
@@ -321,13 +318,14 @@ const DashboardContent = () => {
           </CardContent>
         </Card>
       </div>
-      
+
       <div className="space-y-6">
         <Card>
           <CardHeader>
             <CardTitle>Pengguna Baru Menunggu Verifikasi</CardTitle>
             <CardDescription>
-              Pengguna yang perlu diverifikasi sebelum dapat menggunakan fitur platform
+              Pengguna yang perlu diverifikasi sebelum dapat menggunakan fitur
+              platform
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -335,11 +333,21 @@ const DashboardContent = () => {
               <table className="w-full caption-bottom text-sm">
                 <thead>
                   <tr className="border-b">
-                    <th className="h-10 px-4 text-left font-medium text-gray-500">Nama</th>
-                    <th className="h-10 px-4 text-left font-medium text-gray-500">Email</th>
-                    <th className="h-10 px-4 text-left font-medium text-gray-500">Tipe</th>
-                    <th className="h-10 px-4 text-left font-medium text-gray-500">Tanggal Daftar</th>
-                    <th className="h-10 px-4 text-right font-medium text-gray-500">Tindakan</th>
+                    <th className="h-10 px-4 text-left font-medium text-gray-500">
+                      Nama
+                    </th>
+                    <th className="h-10 px-4 text-left font-medium text-gray-500">
+                      Email
+                    </th>
+                    <th className="h-10 px-4 text-left font-medium text-gray-500">
+                      Tipe
+                    </th>
+                    <th className="h-10 px-4 text-left font-medium text-gray-500">
+                      Tanggal Daftar
+                    </th>
+                    <th className="h-10 px-4 text-right font-medium text-gray-500">
+                      Tindakan
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -349,18 +357,25 @@ const DashboardContent = () => {
                         <div className="flex items-center">
                           <Avatar className="h-8 w-8 mr-2">
                             <AvatarImage src={user.image} alt={user.name} />
-                            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                            <AvatarFallback>
+                              {user.name.charAt(0)}
+                            </AvatarFallback>
                           </Avatar>
                           <span>{user.name}</span>
                         </div>
                       </td>
                       <td className="p-4">{user.email}</td>
                       <td className="p-4">
-                        <Badge variant="outline" className={
-                          user.type === 'Wisatawan' ? 'bg-jelajah-blue/10 text-jelajah-blue' :
-                          user.type === 'Pemandu' ? 'bg-jelajah-green/10 text-jelajah-green' :
-                          'bg-jelajah-orange/10 text-jelajah-orange'
-                        }>
+                        <Badge
+                          variant="outline"
+                          className={
+                            user.type === "Wisatawan"
+                              ? "bg-jelajah-blue/10 text-jelajah-blue"
+                              : user.type === "Pemandu"
+                                ? "bg-jelajah-green/10 text-jelajah-green"
+                                : "bg-jelajah-orange/10 text-jelajah-orange"
+                          }
+                        >
                           {user.type}
                         </Badge>
                       </td>
@@ -384,7 +399,9 @@ const DashboardContent = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="outline" className="w-full">Lihat Semua Permintaan</Button>
+            <Button variant="outline" className="w-full">
+              Lihat Semua Permintaan
+            </Button>
           </CardFooter>
         </Card>
       </div>
@@ -403,12 +420,12 @@ const UsersContent = ({ handleAction }) => {
           Tambah Pengguna
         </Button>
       </div>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Daftar Pengguna</CardTitle>
           <CardDescription>
-            Kelola semua pengguna pada platform Jelajah Nusantara
+            Kelola semua pengguna pada platform MalukuTrip
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -436,27 +453,47 @@ const UsersContent = ({ handleAction }) => {
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={
-                      user.role === 'Wisatawan' ? 'bg-jelajah-blue/10 text-jelajah-blue' :
-                      user.role === 'Pemandu' ? 'bg-jelajah-green/10 text-jelajah-green' :
-                      user.role === 'Pengelola' ? 'bg-jelajah-orange/10 text-jelajah-orange' :
-                      'bg-red-100 text-red-600'
-                    }>
+                    <Badge
+                      variant="outline"
+                      className={
+                        user.role === "Wisatawan"
+                          ? "bg-jelajah-blue/10 text-jelajah-blue"
+                          : user.role === "Pemandu"
+                            ? "bg-jelajah-green/10 text-jelajah-green"
+                            : user.role === "Pengelola"
+                              ? "bg-jelajah-orange/10 text-jelajah-orange"
+                              : "bg-red-100 text-red-600"
+                      }
+                    >
                       {user.role}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={user.status === 'Aktif' ? 'default' : 'outline'}>
+                    <Badge
+                      variant={user.status === "Aktif" ? "default" : "outline"}
+                    >
                       {user.status}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => handleAction('Detail', user.id, 'pengguna')}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          handleAction("Detail", user.id, "pengguna")
+                        }
+                      >
                         Detail
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleAction('Nonaktifkan', user.id, 'pengguna')}>
-                        {user.status === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan'}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          handleAction("Nonaktifkan", user.id, "pengguna")
+                        }
+                      >
+                        {user.status === "Aktif" ? "Nonaktifkan" : "Aktifkan"}
                       </Button>
                     </div>
                   </TableCell>
@@ -470,8 +507,12 @@ const UsersContent = ({ handleAction }) => {
             Menampilkan 10 dari 120 pengguna
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm">Sebelumnya</Button>
-            <Button variant="outline" size="sm">Selanjutnya</Button>
+            <Button variant="outline" size="sm">
+              Sebelumnya
+            </Button>
+            <Button variant="outline" size="sm">
+              Selanjutnya
+            </Button>
           </div>
         </CardFooter>
       </Card>
@@ -490,12 +531,12 @@ const DestinationsContent = ({ handleAction }) => {
           Tambah Destinasi
         </Button>
       </div>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Daftar Destinasi Wisata</CardTitle>
           <CardDescription>
-            Kelola semua destinasi wisata pada platform Jelajah Nusantara
+            Kelola semua destinasi wisata pada platform MalukuTrip
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -515,9 +556,9 @@ const DestinationsContent = ({ handleAction }) => {
                   <TableCell>
                     <div className="flex items-center">
                       <div className="h-10 w-10 rounded-md overflow-hidden mr-2">
-                        <img 
-                          src={destination.image} 
-                          alt={destination.name} 
+                        <img
+                          src={destination.image}
+                          alt={destination.name}
                           className="h-full w-full object-cover"
                         />
                       </div>
@@ -527,20 +568,48 @@ const DestinationsContent = ({ handleAction }) => {
                   <TableCell>{destination.location}</TableCell>
                   <TableCell>{destination.manager}</TableCell>
                   <TableCell>
-                    <Badge variant={destination.status === 'Aktif' ? 'default' : 'outline'}>
+                    <Badge
+                      variant={
+                        destination.status === "Aktif" ? "default" : "outline"
+                      }
+                    >
                       {destination.status}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => handleAction('Detail', destination.id, 'destinasi')}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          handleAction("Detail", destination.id, "destinasi")
+                        }
+                      >
                         Detail
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleAction('Edit', destination.id, 'destinasi')}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          handleAction("Edit", destination.id, "destinasi")
+                        }
+                      >
                         Edit
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleAction('Nonaktifkan', destination.id, 'destinasi')}>
-                        {destination.status === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan'}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          handleAction(
+                            "Nonaktifkan",
+                            destination.id,
+                            "destinasi",
+                          )
+                        }
+                      >
+                        {destination.status === "Aktif"
+                          ? "Nonaktifkan"
+                          : "Aktifkan"}
                       </Button>
                     </div>
                   </TableCell>
@@ -554,8 +623,12 @@ const DestinationsContent = ({ handleAction }) => {
             Menampilkan 10 dari 85 destinasi
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm">Sebelumnya</Button>
-            <Button variant="outline" size="sm">Selanjutnya</Button>
+            <Button variant="outline" size="sm">
+              Sebelumnya
+            </Button>
+            <Button variant="outline" size="sm">
+              Selanjutnya
+            </Button>
           </div>
         </CardFooter>
       </Card>
@@ -574,17 +647,15 @@ const TransactionsContent = ({ handleAction }) => {
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
-          <Button variant="outline">
-            Filter
-          </Button>
+          <Button variant="outline">Filter</Button>
         </div>
       </div>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Daftar Transaksi</CardTitle>
           <CardDescription>
-            Kelola semua transaksi pada platform Jelajah Nusantara
+            Kelola semua transaksi pada platform MalukuTrip
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -607,24 +678,47 @@ const TransactionsContent = ({ handleAction }) => {
                   <TableCell>{transaction.date}</TableCell>
                   <TableCell>{transaction.user}</TableCell>
                   <TableCell>{transaction.destination}</TableCell>
-                  <TableCell>Rp {transaction.amount.toLocaleString()}</TableCell>
                   <TableCell>
-                    <Badge className={
-                      transaction.status === 'Dibayar' ? 'bg-green-100 text-green-700' :
-                      transaction.status === 'Menunggu' ? 'bg-yellow-100 text-yellow-700' :
-                      transaction.status === 'Dibatalkan' ? 'bg-red-100 text-red-700' :
-                      'bg-gray-100 text-gray-700'
-                    }>
+                    Rp {transaction.amount.toLocaleString()}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      className={
+                        transaction.status === "Dibayar"
+                          ? "bg-green-100 text-green-700"
+                          : transaction.status === "Menunggu"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : transaction.status === "Dibatalkan"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-gray-100 text-gray-700"
+                      }
+                    >
                       {transaction.status}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => handleAction('Detail', transaction.id, 'transaksi')}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          handleAction("Detail", transaction.id, "transaksi")
+                        }
+                      >
                         Detail
                       </Button>
-                      {transaction.status === 'Menunggu' && (
-                        <Button variant="outline" size="sm" onClick={() => handleAction('Konfirmasi', transaction.id, 'transaksi')}>
+                      {transaction.status === "Menunggu" && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            handleAction(
+                              "Konfirmasi",
+                              transaction.id,
+                              "transaksi",
+                            )
+                          }
+                        >
                           Konfirmasi
                         </Button>
                       )}
@@ -640,8 +734,12 @@ const TransactionsContent = ({ handleAction }) => {
             Menampilkan 10 dari 245 transaksi
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm">Sebelumnya</Button>
-            <Button variant="outline" size="sm">Selanjutnya</Button>
+            <Button variant="outline" size="sm">
+              Sebelumnya
+            </Button>
+            <Button variant="outline" size="sm">
+              Selanjutnya
+            </Button>
           </div>
         </CardFooter>
       </Card>
@@ -662,7 +760,7 @@ const ReportsContent = () => {
           </Button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
@@ -681,10 +779,12 @@ const ReportsContent = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="outline" className="w-full">Detail Laporan Pendapatan</Button>
+            <Button variant="outline" className="w-full">
+              Detail Laporan Pendapatan
+            </Button>
           </CardFooter>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Destinasi Terpopuler</CardTitle>
@@ -702,16 +802,16 @@ const ReportsContent = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="outline" className="w-full">Detail Laporan Destinasi</Button>
+            <Button variant="outline" className="w-full">
+              Detail Laporan Destinasi
+            </Button>
           </CardFooter>
         </Card>
-        
+
         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle>Laporan Tersedia</CardTitle>
-            <CardDescription>
-              Daftar laporan yang dapat diunduh
-            </CardDescription>
+            <CardDescription>Daftar laporan yang dapat diunduh</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -723,7 +823,9 @@ const ReportsContent = () => {
                     </div>
                     <div>
                       <h3 className="font-medium">{report.title}</h3>
-                      <p className="text-sm text-gray-500 mt-1">{report.description}</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {report.description}
+                      </p>
                       <div className="mt-3">
                         <Button size="sm" variant="outline" className="w-full">
                           <Download size={14} className="mr-1" />
@@ -748,11 +850,9 @@ const SettingsContent = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Pengaturan Platform</h2>
-        <Button>
-          Simpan Perubahan
-        </Button>
+        <Button>Simpan Perubahan</Button>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1">
           <Card>
@@ -769,7 +869,10 @@ const SettingsContent = () => {
                   <Settings className="mr-2 h-4 w-4" />
                   Pengaturan Umum
                 </Button>
-                <Button variant="ghost" className="w-full justify-start bg-gray-100">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start bg-gray-100"
+                >
                   <ShieldAlert className="mr-2 h-4 w-4" />
                   Keamanan
                 </Button>
@@ -781,7 +884,7 @@ const SettingsContent = () => {
             </CardContent>
           </Card>
         </div>
-        
+
         <div className="md:col-span-2">
           <Card>
             <CardHeader>
@@ -793,32 +896,48 @@ const SettingsContent = () => {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="current-password">Password Saat Ini</Label>
-                <Input type="password" id="current-password" placeholder="Masukkan password saat ini" />
+                <Input
+                  type="password"
+                  id="current-password"
+                  placeholder="Masukkan password saat ini"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="new-password">Password Baru</Label>
-                <Input type="password" id="new-password" placeholder="Masukkan password baru" />
+                <Input
+                  type="password"
+                  id="new-password"
+                  placeholder="Masukkan password baru"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirm-password">Konfirmasi Password</Label>
-                <Input type="password" id="confirm-password" placeholder="Konfirmasi password baru" />
+                <Input
+                  type="password"
+                  id="confirm-password"
+                  placeholder="Konfirmasi password baru"
+                />
               </div>
               <Button>Ubah Password</Button>
-              
+
               <div className="pt-4 border-t mt-6">
                 <h3 className="font-medium mb-4">Keamanan Lanjutan</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-medium">Two-Factor Authentication</h4>
-                      <p className="text-sm text-gray-500">Tingkatkan keamanan dengan verifikasi 2 langkah</p>
+                      <p className="text-sm text-gray-500">
+                        Tingkatkan keamanan dengan verifikasi 2 langkah
+                      </p>
                     </div>
                     <Button variant="outline">Aktifkan</Button>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-medium">Sesi Aktif</h4>
-                      <p className="text-sm text-gray-500">Kelola sesi login yang aktif</p>
+                      <p className="text-sm text-gray-500">
+                        Kelola sesi login yang aktif
+                      </p>
                     </div>
                     <Button variant="outline">Kelola</Button>
                   </div>
@@ -890,31 +1009,36 @@ const popularDestinations = [
     name: "Pulau Bali",
     location: "Bali",
     visitors: 25480,
-    image: "https://images.unsplash.com/photo-1573790387438-4da905039392?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFsaXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
+    image:
+      "https://images.unsplash.com/photo-1573790387438-4da905039392?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFsaXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
   },
   {
     name: "Candi Borobudur",
     location: "Jawa Tengah",
     visitors: 18340,
-    image: "https://images.unsplash.com/photo-1596402184230-21c23c44fac0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9yb2J1ZHVyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
+    image:
+      "https://images.unsplash.com/photo-1596402184230-21c23c44fac0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9yb2J1ZHVyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
   },
   {
     name: "Raja Ampat",
     location: "Papua Barat",
     visitors: 14560,
-    image: "https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmFqYSUyMGFtcGF0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
+    image:
+      "https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmFqYSUyMGFtcGF0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
   },
   {
     name: "Labuan Bajo",
     location: "NTT",
     visitors: 12780,
-    image: "https://images.unsplash.com/photo-1570789210967-2cac24afeb00?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFidWFuJTIwYmFqb3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
+    image:
+      "https://images.unsplash.com/photo-1570789210967-2cac24afeb00?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFidWFuJTIwYmFqb3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
   },
   {
     name: "Danau Toba",
     location: "Sumatera Utara",
     visitors: 10340,
-    image: "https://images.unsplash.com/photo-1595140792979-e7ae0bad7455?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFrZSUyMHRvYmF8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
+    image:
+      "https://images.unsplash.com/photo-1595140792979-e7ae0bad7455?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFrZSUyMHRvYmF8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
   },
 ];
 
@@ -947,183 +1071,184 @@ const activityLogs = [
 
 // Additional mock data for new sections
 const allUsers = [
-  { 
-    id: 'USR1001', 
-    name: 'Ahmad Farhan', 
-    email: 'ahmad@example.com', 
-    role: 'Wisatawan', 
-    status: 'Aktif',
-    image: 'https://randomuser.me/api/portraits/men/32.jpg' 
+  {
+    id: "USR1001",
+    name: "Ahmad Farhan",
+    email: "ahmad@example.com",
+    role: "Wisatawan",
+    status: "Aktif",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
   },
-  { 
-    id: 'USR1002', 
-    name: 'Siti Nuraini', 
-    email: 'siti@example.com', 
-    role: 'Pemandu', 
-    status: 'Aktif',
-    image: 'https://randomuser.me/api/portraits/women/44.jpg' 
+  {
+    id: "USR1002",
+    name: "Siti Nuraini",
+    email: "siti@example.com",
+    role: "Pemandu",
+    status: "Aktif",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
   },
-  { 
-    id: 'USR1003', 
-    name: 'Budi Santoso', 
-    email: 'budi@example.com', 
-    role: 'Pengelola', 
-    status: 'Aktif',
-    image: 'https://randomuser.me/api/portraits/men/67.jpg' 
+  {
+    id: "USR1003",
+    name: "Budi Santoso",
+    email: "budi@example.com",
+    role: "Pengelola",
+    status: "Aktif",
+    image: "https://randomuser.me/api/portraits/men/67.jpg",
   },
-  { 
-    id: 'USR1004', 
-    name: 'Dewi Anggraini', 
-    email: 'dewi@example.com', 
-    role: 'Wisatawan', 
-    status: 'Nonaktif',
-    image: 'https://randomuser.me/api/portraits/women/22.jpg' 
+  {
+    id: "USR1004",
+    name: "Dewi Anggraini",
+    email: "dewi@example.com",
+    role: "Wisatawan",
+    status: "Nonaktif",
+    image: "https://randomuser.me/api/portraits/women/22.jpg",
   },
-  { 
-    id: 'USR1005', 
-    name: 'Rudi Setiawan', 
-    email: 'rudi@example.com', 
-    role: 'Pemandu', 
-    status: 'Aktif',
-    image: 'https://randomuser.me/api/portraits/men/45.jpg' 
+  {
+    id: "USR1005",
+    name: "Rudi Setiawan",
+    email: "rudi@example.com",
+    role: "Pemandu",
+    status: "Aktif",
+    image: "https://randomuser.me/api/portraits/men/45.jpg",
   },
-  { 
-    id: 'USR1006', 
-    name: 'Lina Marlina', 
-    email: 'lina@example.com', 
-    role: 'Wisatawan', 
-    status: 'Aktif',
-    image: 'https://randomuser.me/api/portraits/women/28.jpg' 
+  {
+    id: "USR1006",
+    name: "Lina Marlina",
+    email: "lina@example.com",
+    role: "Wisatawan",
+    status: "Aktif",
+    image: "https://randomuser.me/api/portraits/women/28.jpg",
   },
-  { 
-    id: 'USR1007', 
-    name: 'Dimas Prakoso', 
-    email: 'dimas@example.com', 
-    role: 'Pemandu', 
-    status: 'Nonaktif',
-    image: 'https://randomuser.me/api/portraits/men/15.jpg' 
+  {
+    id: "USR1007",
+    name: "Dimas Prakoso",
+    email: "dimas@example.com",
+    role: "Pemandu",
+    status: "Nonaktif",
+    image: "https://randomuser.me/api/portraits/men/15.jpg",
   },
 ];
 
 const destinations = [
   {
-    id: 'DST1001',
-    name: 'Pantai Kuta',
-    location: 'Bali',
-    manager: 'Wayan Sukarta',
-    status: 'Aktif',
-    image: 'https://images.unsplash.com/photo-1558901591-37685eb2ada9'
+    id: "DST1001",
+    name: "Pantai Kuta",
+    location: "Bali",
+    manager: "Wayan Sukarta",
+    status: "Aktif",
+    image: "https://images.unsplash.com/photo-1558901591-37685eb2ada9",
   },
   {
-    id: 'DST1002',
-    name: 'Candi Borobudur',
-    location: 'Jawa Tengah',
-    manager: 'Bambang Sutrisno',
-    status: 'Aktif',
-    image: 'https://images.unsplash.com/photo-1596402184230-21c23c44fac0'
+    id: "DST1002",
+    name: "Candi Borobudur",
+    location: "Jawa Tengah",
+    manager: "Bambang Sutrisno",
+    status: "Aktif",
+    image: "https://images.unsplash.com/photo-1596402184230-21c23c44fac0",
   },
   {
-    id: 'DST1003',
-    name: 'Kawah Putih',
-    location: 'Jawa Barat',
-    manager: 'Asep Sunandar',
-    status: 'Aktif',
-    image: 'https://images.unsplash.com/photo-1587550722014-867a89226c06'
+    id: "DST1003",
+    name: "Kawah Putih",
+    location: "Jawa Barat",
+    manager: "Asep Sunandar",
+    status: "Aktif",
+    image: "https://images.unsplash.com/photo-1587550722014-867a89226c06",
   },
   {
-    id: 'DST1004',
-    name: 'Taman Nasional Komodo',
-    location: 'Nusa Tenggara Timur',
-    manager: 'Maria Lakabola',
-    status: 'Aktif',
-    image: 'https://images.unsplash.com/photo-1516748088067-ed3a743613c1'
+    id: "DST1004",
+    name: "Taman Nasional Komodo",
+    location: "Nusa Tenggara Timur",
+    manager: "Maria Lakabola",
+    status: "Aktif",
+    image: "https://images.unsplash.com/photo-1516748088067-ed3a743613c1",
   },
   {
-    id: 'DST1005',
-    name: 'Raja Ampat',
-    location: 'Papua Barat',
-    manager: 'Frans Rumaseb',
-    status: 'Aktif',
-    image: 'https://images.unsplash.com/photo-1516690561799-46d8f74f9abf'
+    id: "DST1005",
+    name: "Raja Ampat",
+    location: "Papua Barat",
+    manager: "Frans Rumaseb",
+    status: "Aktif",
+    image: "https://images.unsplash.com/photo-1516690561799-46d8f74f9abf",
   },
   {
-    id: 'DST1006',
-    name: 'Danau Toba',
-    location: 'Sumatera Utara',
-    manager: 'Tigor Simatupang',
-    status: 'Nonaktif',
-    image: 'https://images.unsplash.com/photo-1595140792979-e7ae0bad7455'
+    id: "DST1006",
+    name: "Danau Toba",
+    location: "Sumatera Utara",
+    manager: "Tigor Simatupang",
+    status: "Nonaktif",
+    image: "https://images.unsplash.com/photo-1595140792979-e7ae0bad7455",
   },
 ];
 
 const transactions = [
   {
-    id: 'TRX1001',
-    date: '2023-05-24',
-    user: 'Ahmad Farhan',
-    destination: 'Pantai Kuta',
+    id: "TRX1001",
+    date: "2023-05-24",
+    user: "Ahmad Farhan",
+    destination: "Pantai Kuta",
     amount: 1500000,
-    status: 'Dibayar'
+    status: "Dibayar",
   },
   {
-    id: 'TRX1002',
-    date: '2023-05-23',
-    user: 'Dewi Anggraini',
-    destination: 'Raja Ampat',
+    id: "TRX1002",
+    date: "2023-05-23",
+    user: "Dewi Anggraini",
+    destination: "Raja Ampat",
     amount: 4500000,
-    status: 'Dibayar'
+    status: "Dibayar",
   },
   {
-    id: 'TRX1003',
-    date: '2023-05-23',
-    user: 'Lina Marlina',
-    destination: 'Candi Borobudur',
+    id: "TRX1003",
+    date: "2023-05-23",
+    user: "Lina Marlina",
+    destination: "Candi Borobudur",
     amount: 750000,
-    status: 'Menunggu'
+    status: "Menunggu",
   },
   {
-    id: 'TRX1004',
-    date: '2023-05-22',
-    user: 'Budi Santoso',
-    destination: 'Taman Nasional Komodo',
+    id: "TRX1004",
+    date: "2023-05-22",
+    user: "Budi Santoso",
+    destination: "Taman Nasional Komodo",
     amount: 3250000,
-    status: 'Dibatalkan'
+    status: "Dibatalkan",
   },
   {
-    id: 'TRX1005',
-    date: '2023-05-21',
-    user: 'Siti Nuraini',
-    destination: 'Danau Toba',
+    id: "TRX1005",
+    date: "2023-05-21",
+    user: "Siti Nuraini",
+    destination: "Danau Toba",
     amount: 1250000,
-    status: 'Dibayar'
+    status: "Dibayar",
   },
 ];
 
 const reports = [
   {
-    title: 'Laporan Pendapatan Bulanan',
-    description: 'Ringkasan pendapatan platform per bulan dalam 12 bulan terakhir'
+    title: "Laporan Pendapatan Bulanan",
+    description:
+      "Ringkasan pendapatan platform per bulan dalam 12 bulan terakhir",
   },
   {
-    title: 'Laporan Pengguna Aktif',
-    description: 'Data pengguna aktif dan pertumbuhan jumlah pengguna'
+    title: "Laporan Pengguna Aktif",
+    description: "Data pengguna aktif dan pertumbuhan jumlah pengguna",
   },
   {
-    title: 'Laporan Destinasi Populer',
-    description: 'Statistik destinasi berdasarkan jumlah kunjungan'
+    title: "Laporan Destinasi Populer",
+    description: "Statistik destinasi berdasarkan jumlah kunjungan",
   },
   {
-    title: 'Laporan Pemandu Teratas',
-    description: 'Daftar pemandu dengan rating dan jumlah tur tertinggi'
+    title: "Laporan Pemandu Teratas",
+    description: "Daftar pemandu dengan rating dan jumlah tur tertinggi",
   },
   {
-    title: 'Laporan Transaksi',
-    description: 'Detail seluruh transaksi dalam periode tertentu'
+    title: "Laporan Transaksi",
+    description: "Detail seluruh transaksi dalam periode tertentu",
   },
   {
-    title: 'Laporan Pajak',
-    description: 'Laporan pajak untuk keperluan administrasi'
-  }
+    title: "Laporan Pajak",
+    description: "Laporan pajak untuk keperluan administrasi",
+  },
 ];
 
 export default AdminDashboard;
