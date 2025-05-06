@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -29,6 +28,7 @@ import {
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import { usePemanduStore } from "@/stores/pemanduStore";
 
 const GuideDashboard = () => {
   // Mock guide data
@@ -47,6 +47,16 @@ const GuideDashboard = () => {
     verified: true,
   };
 
+  const { fetchOrderGuides, updateOrderGuide, orderGuides } = usePemanduStore();
+
+  useEffect(() => {
+    fetchOrderGuides();
+  }, [fetchOrderGuides]);
+
+  const handleEvent = async (id, event: "cancelled" | "confirmed") => {
+    const resp = await updateOrderGuide(id, event);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -63,11 +73,17 @@ const GuideDashboard = () => {
                   </Avatar>
                   <h2 className="text-xl font-semibold">{guide.name}</h2>
                   <div className="flex items-center mt-1 mb-1">
-                    <Badge variant="outline" className="bg-jelajah-blue/10 text-jelajah-blue mr-2">
+                    <Badge
+                      variant="outline"
+                      className="bg-jelajah-blue/10 text-jelajah-blue mr-2"
+                    >
                       Pemandu Lokal
                     </Badge>
                     {guide.verified && (
-                      <Badge variant="outline" className="bg-jelajah-green/10 text-jelajah-green">
+                      <Badge
+                        variant="outline"
+                        className="bg-jelajah-green/10 text-jelajah-green"
+                      >
                         Terverifikasi
                       </Badge>
                     )}
@@ -75,7 +91,9 @@ const GuideDashboard = () => {
                   <div className="flex items-center text-amber-500 mt-1">
                     <Star size={16} fill="currentColor" className="mr-1" />
                     <span className="font-medium">{guide.rating}</span>
-                    <span className="text-gray-500 text-sm ml-1">({guide.tours} tur)</span>
+                    <span className="text-gray-500 text-sm ml-1">
+                      ({guide.tours} tur)
+                    </span>
                   </div>
                   <p className="text-sm text-gray-500 mt-1">
                     Bergabung {guide.joinDate}
@@ -83,31 +101,55 @@ const GuideDashboard = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <a href="#" className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100">
+                  <a
+                    href="#"
+                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
+                  >
                     <User size={18} className="mr-3 text-jelajah-blue" />
                     <span>Profil</span>
                   </a>
-                  <a href="#" className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100">
+                  <a
+                    href="#"
+                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
+                  >
                     <BookOpen size={18} className="mr-3 text-jelajah-blue" />
                     <span>Tur Saya</span>
                   </a>
-                  <Link to="/tour-schedule" className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100 bg-gray-100">
+                  <Link
+                    to="/tour-schedule"
+                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100 bg-gray-100"
+                  >
                     <Calendar size={18} className="mr-3 text-jelajah-blue" />
                     <span>Jadwal Tur</span>
                   </Link>
-                  <a href="#" className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100">
+                  <a
+                    href="#"
+                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
+                  >
                     <Users size={18} className="mr-3 text-jelajah-blue" />
                     <span>Wisatawan</span>
                   </a>
-                  <a href="#" className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100">
-                    <MessageCircle size={18} className="mr-3 text-jelajah-blue" />
+                  <a
+                    href="#"
+                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
+                  >
+                    <MessageCircle
+                      size={18}
+                      className="mr-3 text-jelajah-blue"
+                    />
                     <span>Pesan</span>
                   </a>
-                  <a href="#" className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100">
+                  <a
+                    href="#"
+                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
+                  >
                     <CreditCard size={18} className="mr-3 text-jelajah-blue" />
                     <span>Pendapatan</span>
                   </a>
-                  <a href="#" className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100">
+                  <a
+                    href="#"
+                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
+                  >
                     <Settings size={18} className="mr-3 text-jelajah-blue" />
                     <span>Pengaturan</span>
                   </a>
@@ -121,7 +163,6 @@ const GuideDashboard = () => {
                 <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
                   <TabsList className="grid grid-cols-3">
                     <TabsTrigger value="overview">Ringkasan</TabsTrigger>
-                    <TabsTrigger value="tours">Tur</TabsTrigger>
                     <TabsTrigger value="bookings">Pemesanan</TabsTrigger>
                   </TabsList>
                 </div>
@@ -135,7 +176,9 @@ const GuideDashboard = () => {
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="pt-0">
-                        <div className="text-2xl font-bold">{guide.activeBookings}</div>
+                        <div className="text-2xl font-bold">
+                          {guide.activeBookings}
+                        </div>
                         <p className="text-xs text-gray-500">
                           Perlu ditanggapi segera
                         </p>
@@ -162,13 +205,19 @@ const GuideDashboard = () => {
                       </CardHeader>
                       <CardContent className="pt-0">
                         <div className="flex items-center">
-                          <span className="text-2xl font-bold mr-2">{guide.rating}</span>
+                          <span className="text-2xl font-bold mr-2">
+                            {guide.rating}
+                          </span>
                           <div className="flex text-amber-500">
                             {[...Array(5)].map((_, i) => (
-                              <Star 
-                                key={i} 
-                                size={16} 
-                                fill={i < Math.floor(guide.rating) ? "currentColor" : "none"}
+                              <Star
+                                key={i}
+                                size={16}
+                                fill={
+                                  i < Math.floor(guide.rating)
+                                    ? "currentColor"
+                                    : "none"
+                                }
                                 className="mr-0.5"
                               />
                             ))}
@@ -197,18 +246,27 @@ const GuideDashboard = () => {
                       <div className="space-y-4">
                         <div>
                           <div className="flex justify-between mb-1">
-                            <span className="text-sm font-medium">Tingkat Penyelesaian</span>
-                            <span className="text-sm font-medium">{guide.completionRate}%</span>
+                            <span className="text-sm font-medium">
+                              Tingkat Penyelesaian
+                            </span>
+                            <span className="text-sm font-medium">
+                              {guide.completionRate}%
+                            </span>
                           </div>
-                          <Progress value={guide.completionRate} className="h-2" />
+                          <Progress
+                            value={guide.completionRate}
+                            className="h-2"
+                          />
                           <p className="text-xs text-gray-500 mt-1">
                             Persentase tur yang berhasil diselesaikan
                           </p>
                         </div>
-                        
+
                         <div>
                           <div className="flex justify-between mb-1">
-                            <span className="text-sm font-medium">Respons Cepat</span>
+                            <span className="text-sm font-medium">
+                              Respons Cepat
+                            </span>
                             <span className="text-sm font-medium">92%</span>
                           </div>
                           <Progress value={92} className="h-2" />
@@ -216,10 +274,12 @@ const GuideDashboard = () => {
                             Persentase pesan yang dijawab dalam 1 jam
                           </p>
                         </div>
-                        
+
                         <div>
                           <div className="flex justify-between mb-1">
-                            <span className="text-sm font-medium">Kepuasan Wisatawan</span>
+                            <span className="text-sm font-medium">
+                              Kepuasan Wisatawan
+                            </span>
                             <span className="text-sm font-medium">96%</span>
                           </div>
                           <Progress value={96} className="h-2" />
@@ -230,7 +290,7 @@ const GuideDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                  
+
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <Card>
                       <CardHeader>
@@ -239,20 +299,38 @@ const GuideDashboard = () => {
                       <CardContent>
                         <div className="space-y-4">
                           {bookings.map((booking, index) => (
-                            <div key={index} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
+                            <div
+                              key={index}
+                              className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
+                            >
                               <div className="flex items-center">
                                 <Avatar className="h-10 w-10 mr-3">
-                                  <AvatarImage src={booking.touristImage} alt={booking.touristName} />
-                                  <AvatarFallback>{booking.touristName.charAt(0)}</AvatarFallback>
+                                  <AvatarImage
+                                    src={booking.touristImage}
+                                    alt={booking.touristName}
+                                  />
+                                  <AvatarFallback>
+                                    {booking.touristName.charAt(0)}
+                                  </AvatarFallback>
                                 </Avatar>
                                 <div>
-                                  <div className="font-medium">{booking.touristName}</div>
-                                  <div className="text-sm text-gray-500">{booking.tourName}</div>
+                                  <div className="font-medium">
+                                    {booking.touristName}
+                                  </div>
+                                  <div className="text-sm text-gray-500">
+                                    {booking.tourName}
+                                  </div>
                                 </div>
                               </div>
-                              <Badge className={`${booking.status === 'Baru' ? 'bg-blue-100 text-blue-800' : 
-                                  booking.status === 'Terkonfirmasi' ? 'bg-green-100 text-green-800' : 
-                                  'bg-amber-100 text-amber-800'}`}>
+                              <Badge
+                                className={`${
+                                  booking.status === "Baru"
+                                    ? "bg-blue-100 text-blue-800"
+                                    : booking.status === "Terkonfirmasi"
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-amber-100 text-amber-800"
+                                }`}
+                              >
                                 {booking.status}
                               </Badge>
                             </div>
@@ -260,10 +338,12 @@ const GuideDashboard = () => {
                         </div>
                       </CardContent>
                       <CardFooter>
-                        <Button variant="outline" className="w-full">Lihat Semua</Button>
+                        <Button variant="outline" className="w-full">
+                          Lihat Semua
+                        </Button>
                       </CardFooter>
                     </Card>
-                    
+
                     <Card>
                       <CardHeader>
                         <CardTitle>Ulasan Terbaru</CardTitle>
@@ -271,34 +351,54 @@ const GuideDashboard = () => {
                       <CardContent>
                         <div className="space-y-4">
                           {reviews.map((review, index) => (
-                            <div key={index} className="border-b pb-4 last:border-0 last:pb-0">
+                            <div
+                              key={index}
+                              className="border-b pb-4 last:border-0 last:pb-0"
+                            >
                               <div className="flex items-center justify-between mb-1">
                                 <div className="flex items-center">
                                   <Avatar className="h-8 w-8 mr-2">
-                                    <AvatarImage src={review.touristImage} alt={review.touristName} />
-                                    <AvatarFallback>{review.touristName.charAt(0)}</AvatarFallback>
+                                    <AvatarImage
+                                      src={review.touristImage}
+                                      alt={review.touristName}
+                                    />
+                                    <AvatarFallback>
+                                      {review.touristName.charAt(0)}
+                                    </AvatarFallback>
                                   </Avatar>
-                                  <span className="font-medium">{review.touristName}</span>
+                                  <span className="font-medium">
+                                    {review.touristName}
+                                  </span>
                                 </div>
                                 <div className="flex items-center text-amber-500">
                                   {[...Array(5)].map((_, i) => (
-                                    <Star 
-                                      key={i} 
-                                      size={14} 
-                                      fill={i < review.rating ? "currentColor" : "none"}
+                                    <Star
+                                      key={i}
+                                      size={14}
+                                      fill={
+                                        i < review.rating
+                                          ? "currentColor"
+                                          : "none"
+                                      }
                                       className="mr-0.5"
                                     />
                                   ))}
                                 </div>
                               </div>
-                              <p className="text-sm text-gray-600">{review.comment}</p>
-                              <div className="text-xs text-gray-500 mt-1">{review.tourName}</div>
+                              <p className="text-sm text-gray-600">
+                                {review.comment}
+                              </p>
+                              <div className="text-xs text-gray-500 mt-1">
+                                {review.tourName}
+                              </div>
                             </div>
                           ))}
                         </div>
                       </CardContent>
                       <CardFooter>
-                        <Button variant="outline" className="w-full">Lihat Semua Ulasan</Button>
+                        <Button variant="outline" className="w-full">
+                          Lihat Semua Ulasan
+                        </Button>
                       </CardFooter>
                     </Card>
                   </div>
@@ -313,16 +413,16 @@ const GuideDashboard = () => {
                         Buat Tur Baru
                       </Button>
                     </div>
-                    
+
                     <div className="space-y-4">
                       {tours.map((tour, index) => (
                         <Card key={index}>
                           <CardContent className="p-0">
                             <div className="flex flex-col md:flex-row">
                               <div className="md:w-1/4">
-                                <img 
-                                  src={tour.image} 
-                                  alt={tour.name} 
+                                <img
+                                  src={tour.image}
+                                  alt={tour.name}
                                   className="w-full h-40 md:h-full object-cover"
                                 />
                               </div>
@@ -330,46 +430,80 @@ const GuideDashboard = () => {
                                 <div className="flex flex-col md:flex-row md:items-start md:justify-between">
                                   <div>
                                     <div className="flex items-center mb-2">
-                                      <Badge className={`${tour.status === 'Aktif' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'} mr-2`}>
+                                      <Badge
+                                        className={`${tour.status === "Aktif" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"} mr-2`}
+                                      >
                                         {tour.status}
                                       </Badge>
-                                      <Badge variant="outline">{tour.category}</Badge>
+                                      <Badge variant="outline">
+                                        {tour.category}
+                                      </Badge>
                                     </div>
-                                    <h3 className="font-semibold text-lg mb-1">{tour.name}</h3>
+                                    <h3 className="font-semibold text-lg mb-1">
+                                      {tour.name}
+                                    </h3>
                                     <div className="flex items-center text-gray-500 mb-2">
                                       <MapPin size={14} className="mr-1" />
-                                      <span className="text-sm">{tour.location}</span>
+                                      <span className="text-sm">
+                                        {tour.location}
+                                      </span>
                                     </div>
                                     <div className="flex items-center text-amber-500">
-                                      <Star size={16} fill="currentColor" className="mr-1" />
-                                      <span className="text-sm font-medium">{tour.rating}</span>
-                                      <span className="text-xs text-gray-500 ml-1">({tour.reviewCount} ulasan)</span>
+                                      <Star
+                                        size={16}
+                                        fill="currentColor"
+                                        className="mr-1"
+                                      />
+                                      <span className="text-sm font-medium">
+                                        {tour.rating}
+                                      </span>
+                                      <span className="text-xs text-gray-500 ml-1">
+                                        ({tour.reviewCount} ulasan)
+                                      </span>
                                     </div>
                                   </div>
-                                  
+
                                   <div className="mt-4 md:mt-0 text-right">
-                                    <div className="text-sm text-gray-500">Harga</div>
-                                    <div className="font-bold text-lg">Rp {tour.price.toLocaleString()}</div>
-                                    <div className="text-xs text-gray-500">per orang</div>
+                                    <div className="text-sm text-gray-500">
+                                      Harga
+                                    </div>
+                                    <div className="font-bold text-lg">
+                                      Rp {tour.price.toLocaleString()}
+                                    </div>
+                                    <div className="text-xs text-gray-500">
+                                      per orang
+                                    </div>
                                   </div>
                                 </div>
-                                
+
                                 <div className="border-t my-4"></div>
-                                
+
                                 <div className="flex flex-col md:flex-row md:justify-between md:items-center">
                                   <div className="mb-3 md:mb-0">
                                     <div className="flex items-center">
-                                      <Calendar size={14} className="mr-1 text-gray-500" />
-                                      <span className="text-sm text-gray-500">Tersedia {tour.availableDates}</span>
+                                      <Calendar
+                                        size={14}
+                                        className="mr-1 text-gray-500"
+                                      />
+                                      <span className="text-sm text-gray-500">
+                                        Tersedia {tour.availableDates}
+                                      </span>
                                     </div>
                                     <div className="flex items-center mt-1">
-                                      <Clock size={14} className="mr-1 text-gray-500" />
-                                      <span className="text-sm text-gray-500">Durasi: {tour.duration}</span>
+                                      <Clock
+                                        size={14}
+                                        className="mr-1 text-gray-500"
+                                      />
+                                      <span className="text-sm text-gray-500">
+                                        Durasi: {tour.duration}
+                                      </span>
                                     </div>
                                   </div>
-                                  
+
                                   <div className="flex space-x-2">
-                                    <Button size="sm" variant="outline">Edit</Button>
+                                    <Button size="sm" variant="outline">
+                                      Edit
+                                    </Button>
                                     <Button size="sm">Kelola Jadwal</Button>
                                   </div>
                                 </div>
@@ -384,82 +518,162 @@ const GuideDashboard = () => {
 
                 <TabsContent value="bookings">
                   <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <h2 className="text-xl font-semibold mb-6">Pemesanan Masuk</h2>
-                    
+                    <h2 className="text-xl font-semibold mb-6">
+                      Pemesanan Masuk
+                    </h2>
+
                     <Tabs defaultValue="pending">
                       <TabsList className="mb-6">
                         <TabsTrigger value="pending">Menunggu</TabsTrigger>
-                        <TabsTrigger value="confirmed">Terkonfirmasi</TabsTrigger>
+                        <TabsTrigger value="confirmed">
+                          Terkonfirmasi
+                        </TabsTrigger>
                         <TabsTrigger value="completed">Selesai</TabsTrigger>
                         <TabsTrigger value="canceled">Dibatalkan</TabsTrigger>
                       </TabsList>
-                      
+
                       <TabsContent value="pending">
                         <div className="space-y-4">
-                          {bookings.filter(b => b.status === 'Baru').map((booking, index) => (
-                            <Card key={index}>
-                              <CardContent className="p-6">
-                                <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-                                  <div className="mb-4 md:mb-0">
-                                    <div className="flex items-center mb-2">
-                                      <Avatar className="h-10 w-10 mr-3">
-                                        <AvatarImage src={booking.touristImage} alt={booking.touristName} />
-                                        <AvatarFallback>{booking.touristName.charAt(0)}</AvatarFallback>
-                                      </Avatar>
-                                      <div>
-                                        <div className="font-medium">{booking.touristName}</div>
-                                        <div className="text-sm text-gray-500">{booking.email}</div>
+                          {orderGuides
+                            ?.filter((b) => b.status === "pending")
+                            .map((booking, index) => (
+                              <Card key={index}>
+                                <CardContent className="p-6">
+                                  <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+                                    <div className="mb-4 md:mb-0">
+                                      <div className="flex items-center mb-2">
+                                        <Avatar className="h-10 w-10 mr-3">
+                                          <AvatarImage
+                                            src={booking?.destination?.image}
+                                          />
+                                          <AvatarFallback>
+                                            {booking?.traveler?.name.charAt(0)}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                          <div className="font-medium">
+                                            {booking?.traveler?.name}
+                                          </div>
+                                          <div className="text-sm text-gray-500">
+                                            {booking?.traveler?.email}
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <h3 className="font-semibold mt-4">
+                                        {booking?.destination?.name}
+                                      </h3>
+                                      <div className="flex items-center text-gray-500 mt-1">
+                                        <Calendar size={14} className="mr-1" />
+                                        <span className="text-sm">
+                                          {booking?.createdAt}
+                                        </span>
                                       </div>
                                     </div>
-                                    
-                                    <h3 className="font-semibold mt-4">{booking.tourName}</h3>
-                                    <div className="flex items-center text-gray-500 mt-1">
-                                      <Calendar size={14} className="mr-1" />
-                                      <span className="text-sm">{booking.date}</span>
-                                    </div>
-                                    <div className="flex items-center text-gray-500 mt-1">
-                                      <Users size={14} className="mr-1" />
-                                      <span className="text-sm">{booking.people} orang</span>
+
+                                    <div className="md:text-right">
+                                      <div className="text-sm text-gray-500">
+                                        Total
+                                      </div>
+                                      <div className="font-bold text-lg mb-4">
+                                        Rp{" "}
+                                        {booking?.booking?.totalPrice?.toLocaleString()}
+                                      </div>
+
+                                      <div className="flex space-x-2 md:justify-end">
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() =>
+                                            handleEvent(
+                                              booking?._id,
+                                              "cancelled",
+                                            )
+                                          }
+                                        >
+                                          Tolak
+                                        </Button>
+                                        <Button
+                                          size="sm"
+                                          onClick={() =>
+                                            handleEvent(
+                                              booking?._id,
+                                              "confirmed",
+                                            )
+                                          }
+                                        >
+                                          Konfirmasi
+                                        </Button>
+                                      </div>
                                     </div>
                                   </div>
-                                  
-                                  <div className="md:text-right">
-                                    <div className="text-sm text-gray-500">Total</div>
-                                    <div className="font-bold text-lg mb-4">Rp {booking.total.toLocaleString()}</div>
-                                    
-                                    <div className="flex space-x-2 md:justify-end">
-                                      <Button variant="outline" size="sm">Tolak</Button>
-                                      <Button size="sm">Konfirmasi</Button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          ))}
+                                </CardContent>
+                              </Card>
+                            ))}
                         </div>
                       </TabsContent>
-                      
+
                       <TabsContent value="confirmed">
                         <div className="space-y-4">
-                          {bookings.filter(b => b.status === 'Terkonfirmasi').map((booking, index) => (
-                            <Card key={index}>
-                              <CardContent className="p-6">
-                                {/* Similar structure as pending tab */}
-                                <div className="text-center text-gray-500 py-8">
-                                  Tidak ada pemesanan terkonfirmasi saat ini
-                                </div>
-                              </CardContent>
-                            </Card>
-                          ))}
+                          {orderGuides
+                            .filter((b) => b.status === "confirmed")
+                            .map((booking, index) => (
+                              <Card key={index}>
+                                <CardContent className="p-6">
+                                  <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+                                    <div className="mb-4 md:mb-0">
+                                      <div className="flex items-center mb-2">
+                                        <Avatar className="h-10 w-10 mr-3">
+                                          <AvatarImage
+                                            src={booking?.destination?.image}
+                                          />
+                                          <AvatarFallback>
+                                            {booking?.traveler?.name.charAt(0)}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                          <div className="font-medium">
+                                            {booking?.traveler?.name}
+                                          </div>
+                                          <div className="text-sm text-gray-500">
+                                            {booking?.traveler?.email}
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <h3 className="font-semibold mt-4">
+                                        {booking?.destination?.name}
+                                      </h3>
+                                      <div className="flex items-center text-gray-500 mt-1">
+                                        <Calendar size={14} className="mr-1" />
+                                        <span className="text-sm">
+                                          {booking?.createdAt}
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    <div className="md:text-right">
+                                      <div className="text-sm text-gray-500">
+                                        Total
+                                      </div>
+                                      <div className="font-bold text-lg mb-4">
+                                        Rp{" "}
+                                        {booking?.booking?.totalPrice?.toLocaleString()}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            ))}
                         </div>
                       </TabsContent>
-                      
+
                       <TabsContent value="completed">
                         <div className="text-center text-gray-500 py-8">
                           Tidak ada pemesanan selesai untuk ditampilkan
                         </div>
                       </TabsContent>
-                      
+
                       <TabsContent value="canceled">
                         <div className="text-center text-gray-500 py-8">
                           Tidak ada pemesanan dibatalkan untuk ditampilkan
@@ -521,7 +735,8 @@ const reviews = [
     touristName: "Ahmad Farhan",
     touristImage: "https://randomuser.me/api/portraits/men/32.jpg",
     rating: 5,
-    comment: "Pemandu yang sangat berpengalaman dan menjelaskan sejarah dengan menarik!",
+    comment:
+      "Pemandu yang sangat berpengalaman dan menjelaskan sejarah dengan menarik!",
     tourName: "Tur Pura Besakih",
     date: "15 Mei 2023",
   },
@@ -551,7 +766,8 @@ const tours = [
     name: "Tur Pura Tanah Lot & Sunset",
     category: "Budaya",
     location: "Tabanan, Bali",
-    image: "https://images.unsplash.com/photo-1604999286549-9775ca576cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dGFuYWglMjBsb3R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
+    image:
+      "https://images.unsplash.com/photo-1604999286549-9775ca576cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dGFuYWglMjBsb3R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
     price: 300000,
     rating: 4.9,
     reviewCount: 124,
@@ -564,7 +780,8 @@ const tours = [
     name: "Tur Budaya Ubud",
     category: "Budaya",
     location: "Ubud, Bali",
-    image: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dWJ1ZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
+    image:
+      "https://images.unsplash.com/photo-1555400038-63f5ba517a47?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dWJ1ZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
     price: 350000,
     rating: 4.8,
     reviewCount: 98,
@@ -577,7 +794,8 @@ const tours = [
     name: "Tur Pantai Kuta & Seminyak",
     category: "Pantai",
     location: "Kuta, Bali",
-    image: "https://images.unsplash.com/photo-1588867702719-08eae92adc33?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8a3V0YSUyMGJlYWNofGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
+    image:
+      "https://images.unsplash.com/photo-1588867702719-08eae92adc33?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8a3V0YSUyMGJlYWNofGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
     price: 250000,
     rating: 4.7,
     reviewCount: 86,

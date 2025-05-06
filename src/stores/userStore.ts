@@ -1,22 +1,43 @@
-
 import { create } from "zustand";
 import apiClient from "@/lib/api-client";
 import { User } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
 interface UserState {
+  allUsers: User[];
   profile: User | null;
   isLoading: boolean;
   error: string | null;
   fetchProfile: () => Promise<User | null>;
+  fetchUsers: () => Promise<User | null>;
   updateProfile: (userData: Partial<User>) => Promise<boolean>;
 }
 
 export const useUserStore = create<UserState>()((set, get) => ({
+  allUsers: [],
   profile: null,
   isLoading: false,
   error: null,
 
+  fetchUsers: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const resp = await apiClient.get("/users");
+      const { data } = resp.data;
+      set({
+        allUsers: data,
+        isLoading: false,
+      });
+      return data;
+    } catch (error) {
+      console.error("Fetch profile error:", error);
+      set({
+        error: "Gagal mengambil data profil",
+        isLoading: false,
+      });
+      return null;
+    }
+  },
   // Fetch user profile
   fetchProfile: async () => {
     set({ isLoading: true, error: null });
@@ -26,9 +47,9 @@ export const useUserStore = create<UserState>()((set, get) => ({
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
         const user = JSON.parse(storedUser);
-        set({ 
+        set({
           profile: user,
-          isLoading: false
+          isLoading: false,
         });
         return user;
       }
@@ -38,7 +59,7 @@ export const useUserStore = create<UserState>()((set, get) => ({
       console.error("Fetch profile error:", error);
       set({
         error: "Gagal mengambil data profil",
-        isLoading: false
+        isLoading: false,
       });
       return null;
     }
@@ -54,14 +75,14 @@ export const useUserStore = create<UserState>()((set, get) => ({
       if (storedUser) {
         const currentUser = JSON.parse(storedUser);
         const updatedUser = { ...currentUser, ...userData };
-        
+
         // Update localStorage and state
         localStorage.setItem("user", JSON.stringify(updatedUser));
-        set({ 
+        set({
           profile: updatedUser,
-          isLoading: false
+          isLoading: false,
         });
-        
+
         toast.success("Profil berhasil diperbarui");
         return true;
       }
@@ -72,10 +93,10 @@ export const useUserStore = create<UserState>()((set, get) => ({
       console.error("Update profile error:", error);
       set({
         error: "Gagal memperbarui profil",
-        isLoading: false
+        isLoading: false,
       });
       toast.error("Gagal memperbarui profil");
       return false;
     }
-  }
+  },
 }));

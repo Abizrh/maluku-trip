@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { usePengelolaStore } from "@/stores/pengelolaStore";
 import { useWisatawanStore } from "@/stores/wisatawanStore";
 
-const DestinationDetail = () => {
+const BookingDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const {
@@ -256,14 +256,7 @@ const DestinationDetail = () => {
                   </div>
 
                   <Button className="w-full mb-3" onClick={bookingHandler}>
-                    Pesan Sekarang
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full flex items-center justify-center gap-2"
-                  >
-                    <MessageCircle size={16} />
-                    Chat dengan Pemandu
+                    Bayar
                   </Button>
                 </div>
               </div>
@@ -631,4 +624,4 @@ const destinationsData = [
   },
 ];
 
-export default DestinationDetail;
+export default BookingDetail;

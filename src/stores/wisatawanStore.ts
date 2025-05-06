@@ -1,7 +1,7 @@
-
 import { create } from "zustand";
 import apiClient from "@/lib/api-client";
 import { toast } from "sonner";
+import { Destination } from "./pengelolaStore";
 
 // Define types for trips
 interface Trip {
@@ -16,12 +16,21 @@ interface Trip {
   imageUrl: string;
 }
 
+export interface Booking {
+  _id: string;
+  destinasiId: string;
+  status: "pending" | "confirmed" | "cancelled" | "completed";
+  destinasi?: Destination;
+}
+
 interface WisatawanState {
-  trips: Trip[];
+  trips: Booking[];
   isLoading: boolean;
   error: string | null;
-  fetchTrips: () => Promise<Trip[]>;
-  bookTrip: (tripData: Omit<Trip, "id" | "status">) => Promise<boolean>;
+  fetchMyBooking: () => Promise<Booking[]>;
+  bookTrip: (
+    tripData: Omit<Booking, "id" | "status" | "destinasi">,
+  ) => Promise<boolean>;
   cancelTrip: (tripId: string) => Promise<boolean>;
 }
 
@@ -36,7 +45,7 @@ const mockTrips: Trip[] = [
     guideId: "2",
     guideName: "Siti Nuraini",
     price: 350000,
-    imageUrl: "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8"
+    imageUrl: "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8",
   },
   {
     id: "2",
@@ -47,8 +56,8 @@ const mockTrips: Trip[] = [
     guideId: "5",
     guideName: "Rizky Pratama",
     price: 250000,
-    imageUrl: "https://images.unsplash.com/photo-1580131683190-48e034839c4d"
-  }
+    imageUrl: "https://images.unsplash.com/photo-1580131683190-48e034839c4d",
+  },
 ];
 
 export const useWisatawanStore = create<WisatawanState>()((set, get) => ({
@@ -57,24 +66,23 @@ export const useWisatawanStore = create<WisatawanState>()((set, get) => ({
   error: null,
 
   // Fetch tourist trips
-  fetchTrips: async () => {
+  fetchMyBooking: async () => {
     set({ isLoading: true, error: null });
     try {
-      // In a real app: const response = await apiClient.get("/wisatawan/trips");
-      // Simulate API call with mock data
-      await new Promise(resolve => setTimeout(resolve, 500)); // Fake delay
-      
-      set({ 
-        trips: mockTrips,
-        isLoading: false
+      const resp = await apiClient.get("/booking/myBookings");
+      const { data } = resp.data;
+
+      set({
+        trips: data,
+        isLoading: false,
       });
-      
-      return mockTrips;
+
+      return data;
     } catch (error) {
       console.error("Fetch trips error:", error);
       set({
         error: "Gagal mengambil data perjalanan",
-        isLoading: false
+        isLoading: false,
       });
       return [];
     }
@@ -84,28 +92,26 @@ export const useWisatawanStore = create<WisatawanState>()((set, get) => ({
   bookTrip: async (tripData) => {
     set({ isLoading: true, error: null });
     try {
+      const resp = await apiClient.post("/booking", tripData);
+      const { data } = resp.data;
+      console.log("Booking response:", resp);
       // In a real app: const response = await apiClient.post("/wisatawan/trips", tripData);
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800)); // Fake delay
-      
-      const newTrip: Trip = {
-        ...tripData,
-        id: Date.now().toString(),
-        status: "upcoming"
-      };
-      
-      set(state => ({ 
-        trips: [...state.trips, newTrip],
-        isLoading: false
+      // await new Promise(resolve => setTimeout(resolve, 800)); // Fake delay
+      //
+
+      set((state) => ({
+        trips: data,
+        isLoading: false,
       }));
-      
+
       toast.success("Perjalanan berhasil dibooking!");
       return true;
     } catch (error) {
       console.error("Book trip error:", error);
       set({
         error: "Gagal membooking perjalanan",
-        isLoading: false
+        isLoading: false,
       });
       toast.error("Gagal membooking perjalanan");
       return false;
@@ -118,25 +124,25 @@ export const useWisatawanStore = create<WisatawanState>()((set, get) => ({
     try {
       // In a real app: const response = await apiClient.put(`/wisatawan/trips/${tripId}/cancel`);
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500)); // Fake delay
-      
-      set(state => ({ 
-        trips: state.trips.map(trip => 
-          trip.id === tripId ? { ...trip, status: "cancelled" } : trip
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Fake delay
+
+      set((state) => ({
+        trips: state.trips.map((trip) =>
+          trip.id === tripId ? { ...trip, status: "cancelled" } : trip,
         ),
-        isLoading: false
+        isLoading: false,
       }));
-      
+
       toast.success("Perjalanan berhasil dibatalkan");
       return true;
     } catch (error) {
       console.error("Cancel trip error:", error);
       set({
         error: "Gagal membatalkan perjalanan",
-        isLoading: false
+        isLoading: false,
       });
       toast.error("Gagal membatalkan perjalanan");
       return false;
     }
-  }
+  },
 }));

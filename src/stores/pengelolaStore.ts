@@ -3,8 +3,8 @@ import apiClient from "@/lib/api-client";
 import { toast } from "sonner";
 
 // Define types for destinations and guides
-interface Destination {
-  id: string;
+export interface Destination {
+  _id: string;
   name: string;
   description: string;
   location: string;
@@ -12,12 +12,10 @@ interface Destination {
   price: number;
   rating: number;
   image: string;
-  features: string[];
-  managerId: string;
 }
 
-interface Guide {
-  id: string;
+export interface Guide {
+  _id: string;
   name: string;
   email: string;
   avatar?: string;
@@ -31,10 +29,12 @@ interface Guide {
 
 interface PengelolaState {
   destinations: Destination[];
+  detailDestination: Destination | null;
   guides: Guide[];
   isLoading: boolean;
   error: string | null;
   fetchDestinations: () => Promise<Destination[]>;
+  getDetailDestination: (param) => Promise<Destination | null>;
   fetchGuides: () => Promise<Guide[]>;
   createDestination: (
     destinationData: Omit<Destination, "id" | "managerId" | "rating">,
@@ -78,6 +78,7 @@ const mockGuides: Guide[] = [
 export const usePengelolaStore = create<PengelolaState>()((set, get) => ({
   destinations: [],
   guides: [],
+  detailDestination: null,
   isLoading: false,
   error: null,
 
@@ -89,6 +90,27 @@ export const usePengelolaStore = create<PengelolaState>()((set, get) => ({
       const { data } = resp.data;
       set({
         destinations: data,
+        isLoading: false,
+      });
+
+      return data;
+    } catch (error) {
+      console.error("Fetch destinations error:", error);
+      set({
+        error: "Gagal mengambil data destinasi",
+        isLoading: false,
+      });
+      return [];
+    }
+  },
+
+  getDetailDestination: async (id: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const resp = await apiClient.get("/destinasi/" + id);
+      const { data } = resp.data;
+      set({
+        detailDestination: data,
         isLoading: false,
       });
 
@@ -131,33 +153,14 @@ export const usePengelolaStore = create<PengelolaState>()((set, get) => ({
   createDestination: async (destinationData) => {
     set({ isLoading: true, error: null });
     try {
-      // Get current user ID
-      const userJson = localStorage.getItem("user");
-      if (!userJson) {
-        throw new Error("User not logged in");
-      }
-      const user = JSON.parse(userJson);
-
-      // In a real app: const response = await apiClient.post("/pengelola/destinations", destinationData);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 800)); // Fake delay
-
-      const newDestination: Destination = {
-        ...destinationData,
-        id: Date.now().toString(),
-        managerId: user.id,
-        rating: 0, // New destination starts with no rating
-      };
-
-      set((state) => ({
-        destinations: [...state.destinations, newDestination],
-        isLoading: false,
-      }));
+      const resp = await apiClient.post("/destinasi", destinationData);
+      // const {  } = resp.data;
+      console.log("as", resp);
 
       toast.success("Destinasi wisata berhasil dibuat!");
       return true;
     } catch (error) {
-      console.error("Create destination error:", error);
+      console.error("Create destination error:", error.response);
       set({
         error: "Gagal membuat destinasi wisata",
         isLoading: false,

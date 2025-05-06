@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -33,6 +33,7 @@ import { useAuthStore } from "@/stores/authStore";
 
 export function Navbar() {
   const { user, isAuthenticated, logout } = useAuthStore();
+  const navigate = useNavigate();
 
   const getDashboardLink = () => {
     if (!user) return "/dashboard";
@@ -49,6 +50,15 @@ export function Navbar() {
     }
   };
 
+  const onLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  const showLink = () => {
+    return !user || user.role === "wisatawan";
+  };
+
   return (
     <div className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
@@ -60,54 +70,32 @@ export function Navbar() {
             MalukuTrip
           </span>
         </Link>
-        <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Destinasi</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid gap-3 p-6 w-[400px] md:w-[500px] lg:w-[600px] grid-cols-2">
-                  {destinations.map((destination) => (
-                    <li key={destination.title}>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to={destination.href}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">
-                            {destination.title}
-                          </div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {destination.description}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link
-                to="/explore"
-                className={cn(
-                  "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50",
-                )}
-              >
-                Explore
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link
-                to="/guides"
-                className={cn(
-                  "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50",
-                )}
-              >
-                Pemandu Lokal
-              </Link>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+        {showLink() && (
+          <NavigationMenu className="hidden md:flex">
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <Link
+                  to="/explore"
+                  className={cn(
+                    "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50",
+                  )}
+                >
+                  Explore
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link
+                  to="/guides"
+                  className={cn(
+                    "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50",
+                  )}
+                >
+                  Pemandu Lokal
+                </Link>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        )}
         <div className="ml-auto flex items-center space-x-4">
           <Button variant="ghost" size="icon" className="md:hidden">
             <Search className="h-5 w-5" />

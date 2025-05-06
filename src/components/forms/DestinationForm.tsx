@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +24,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { usePengelolaStore } from "@/stores/pengelolaStore";
+import { useUserStore } from "@/stores/userStore";
+import { usePemanduStore } from "@/stores/pemanduStore";
 
 // Define the form schema
 const destinationSchema = z.object({
@@ -32,12 +34,15 @@ const destinationSchema = z.object({
   location: z.string().min(1, { message: "Lokasi harus diisi" }),
   description: z.string().min(10, { message: "Deskripsi minimal 10 karakter" }),
   category: z.string().min(1, { message: "Kategori harus dipilih" }),
+  guide_id: z.string().min(1, { message: "Pemandu harus dipilih" }),
   price: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
     message: "Harga harus berupa angka positif",
   }),
-  maxVisitors: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-    message: "Maksimal pengunjung harus berupa angka positif",
-  }),
+  maxVisitors: z
+    .string()
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Maksimal pengunjung harus berupa angka positif",
+    }),
 });
 
 type DestinationFormProps = {
@@ -49,6 +54,9 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
   const isEditMode = !!initialData;
   const [images, setImages] = useState<string[]>(initialData?.images || []);
   const [uploading, setUploading] = useState(false);
+  const { createDestination } = usePengelolaStore();
+  const { fetchUsers } = useUserStore();
+  const { fetchGuides, guides } = usePemanduStore();
 
   // Initialize the form with default values or existing data for editing
   const form = useForm<z.infer<typeof destinationSchema>>({
@@ -58,13 +66,16 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
       location: initialData?.location || "",
       description: initialData?.description || "",
       category: initialData?.category || "",
+      guide_id: initialData?.quide_id || "",
       price: initialData?.price ? initialData.price.toString() : "",
-      maxVisitors: initialData?.maxVisitors ? initialData.maxVisitors.toString() : "",
+      maxVisitors: initialData?.maxVisitors
+        ? initialData.maxVisitors.toString()
+        : "",
     },
   });
 
   // Handle form submission
-  const onSubmit = (values: z.infer<typeof destinationSchema>) => {
+  const onSubmit = async (values: z.infer<typeof destinationSchema>) => {
     if (images.length === 0) {
       toast.error("Minimal satu gambar harus diunggah");
       return;
@@ -74,19 +85,26 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
     const destinationData = {
       ...values,
       price: Number(values.price),
-      maxVisitors: Number(values.maxVisitors),
-      images,
-      status: "Aktif",
-      id: initialData?.id || `dest-${Date.now()}`,
+      // maxVisitors: Number(values.maxVisitors),
+      image: images[0],
+      // status: "Aktif",
+      // id: initialData?.id || `dest-${Date.now()}`,
     };
 
-    // Simulate API call
-    setTimeout(() => {
+    const destinasi = await createDestination(destinationData);
+
+    if (destinasi) {
       toast.success(
-        isEditMode ? "Destinasi berhasil diperbarui" : "Destinasi baru berhasil ditambahkan"
+        isEditMode
+          ? "Destinasi berhasil diperbarui"
+          : "Destinasi baru berhasil ditambahkan",
       );
       navigate("/manager-dashboard");
-    }, 500);
+    }
+
+    // Simulate API call
+    // setTimeout(() => {
+    // }, 500);
   };
 
   // Handle image upload (mock implementation)
@@ -108,6 +126,10 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
     newImages.splice(index, 1);
     setImages(newImages);
   };
+
+  useEffect(() => {
+    fetchGuides();
+  }, [fetchGuides]);
 
   return (
     <Form {...form}>
@@ -147,7 +169,10 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kategori</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih kategori" />
@@ -160,6 +185,33 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
                     <SelectItem value="Gunung">Pegunungan</SelectItem>
                     <SelectItem value="Sejarah">Sejarah</SelectItem>
                     <SelectItem value="Kuliner">Kuliner</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="guide_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Pemandu</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih kategori" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {guides.map((guide) => (
+                      <SelectItem key={guide._id} value={guide._id}>
+                        {guide.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -197,6 +249,80 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
 
           <FormField
             control={form.control}
+            name="maxVisitors"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Rating</FormLabel>
+                <FormControl>
+                  <Input type="number" min="1" placeholder="100" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="maxVisitors"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Fasilitas</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih kategori" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Alam">Wisata Alam</SelectItem>
+                      <SelectItem value="Budaya">Wisata Budaya</SelectItem>
+                      <SelectItem value="Pantai">Pantai</SelectItem>
+                      <SelectItem value="Gunung">Pegunungan</SelectItem>
+                      <SelectItem value="Sejarah">Sejarah</SelectItem>
+                      <SelectItem value="Kuliner">Kuliner</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="maxVisitors"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Include</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih kategori" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Alam">Wisata Alam</SelectItem>
+                      <SelectItem value="Budaya">Wisata Budaya</SelectItem>
+                      <SelectItem value="Pantai">Pantai</SelectItem>
+                      <SelectItem value="Gunung">Pegunungan</SelectItem>
+                      <SelectItem value="Sejarah">Sejarah</SelectItem>
+                      <SelectItem value="Kuliner">Kuliner</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem className="col-span-full">
@@ -218,7 +344,10 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
           <FormLabel className="block mb-2">Foto Destinasi</FormLabel>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             {images.map((image, index) => (
-              <div key={index} className="relative rounded-md overflow-hidden h-32">
+              <div
+                key={index}
+                className="relative rounded-md overflow-hidden h-32"
+              >
                 <img
                   src={image}
                   alt={`Destination ${index + 1}`}
@@ -246,7 +375,9 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
             </button>
           </div>
           {images.length === 0 && (
-            <p className="text-sm text-destructive">Minimal satu foto harus diunggah</p>
+            <p className="text-sm text-destructive">
+              Minimal satu foto harus diunggah
+            </p>
           )}
         </div>
 

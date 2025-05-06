@@ -180,8 +180,8 @@ const Explore = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {destinations.map((destination) => (
                       <DestinationCard
-                        key={destination.id}
-                        id={destination.id}
+                        key={destination._id}
+                        id={destination._id}
                         name={destination.name}
                         location={destination.location}
                         image={destination.image}
