@@ -25,9 +25,11 @@ export interface Booking {
 
 interface WisatawanState {
   trips: Booking[];
+  detailTrip: Booking | null;
   isLoading: boolean;
   error: string | null;
   fetchMyBooking: () => Promise<Booking[]>;
+  getBookingDetail: (id: string) => Promise<Booking>;
   bookTrip: (
     tripData: Omit<Booking, "id" | "status" | "destinasi">,
   ) => Promise<boolean>;
@@ -62,6 +64,7 @@ const mockTrips: Trip[] = [
 
 export const useWisatawanStore = create<WisatawanState>()((set, get) => ({
   trips: [],
+  detailTrip: null,
   isLoading: false,
   error: null,
 
@@ -85,6 +88,24 @@ export const useWisatawanStore = create<WisatawanState>()((set, get) => ({
         isLoading: false,
       });
       return [];
+    }
+  },
+
+  getBookingDetail: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const resp = await apiClient.get(`/booking/${id}`);
+      const { data } = resp.data;
+      console.log("Booking detail response:", resp);
+      set({ detailTrip: data, isLoading: false });
+      return data;
+    } catch (error) {
+      console.error("Get booking detail error:", error);
+      set({
+        error: "Gagal mengambil detail perjalanan",
+        isLoading: false,
+      });
+      return null;
     }
   },
 

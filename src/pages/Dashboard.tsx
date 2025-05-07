@@ -255,9 +255,7 @@ const Dashboard = () => {
                                   </div>
 
                                   <div className="flex space-x-2">
-                                    <Link
-                                      to={`/booking/${trip?.destinasi?._id}`}
-                                    >
+                                    <Link to={`/booking/${trip._id}`}>
                                       <Button size="sm" variant="outline">
                                         Detail
                                       </Button>
@@ -309,89 +307,95 @@ const Dashboard = () => {
                   <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                     <Tabs defaultValue="upcoming">
                       <TabsList className="mb-6">
-                        <TabsTrigger value="upcoming">Mendatang</TabsTrigger>
-                        <TabsTrigger value="past">Selesai</TabsTrigger>
+                        <TabsTrigger value="pending">Menunggu</TabsTrigger>
+                        <TabsTrigger value="confirmed">
+                          Terkonfirmasi
+                        </TabsTrigger>
+                        <TabsTrigger value="completed">Selesai</TabsTrigger>
                         <TabsTrigger value="canceled">Dibatalkan</TabsTrigger>
                       </TabsList>
-                      <TabsContent value="upcoming">
+                      <TabsContent value="pending">
                         {trips.length > 0 ? (
                           <div className="space-y-4">
-                            {trips.map((trip, index) => (
-                              <Card key={index}>
-                                <CardContent className="p-0">
-                                  <div className="flex flex-col md:flex-row">
-                                    <div className="md:w-1/4">
-                                      <img
-                                        src={trip?.destinasi?.image}
-                                        alt={trip?.destinasi?.name}
-                                        className="w-full h-40 md:h-full object-cover"
-                                      />
-                                    </div>
-                                    <div className="p-4 md:p-6 flex-1">
-                                      <div className="flex flex-col md:flex-row md:justify-between md:items-start">
-                                        <div>
-                                          <Badge className="mb-2">
-                                            {trip.status}
-                                          </Badge>
-                                          <h3 className="font-semibold text-lg mb-1">
-                                            {trip?.destinasi?.name}
-                                          </h3>
-                                          <div className="flex items-center text-gray-500 mb-4">
-                                            <Calendar
-                                              size={14}
-                                              className="mr-1"
-                                            />
-                                            <span className="text-sm">
-                                              {trip?.createdAt}
-                                            </span>
-                                          </div>
-                                        </div>
-                                        <div className="mt-2 md:mt-0">
-                                          <div className="text-sm text-gray-500">
-                                            Total
-                                          </div>
-                                          <div className="font-bold text-lg">
-                                            Rp{" "}
-                                            {trip?.totalPrice?.toLocaleString()}
-                                          </div>
-                                        </div>
+                            {trips
+                              ?.filter((b) => b.status === "pending")
+                              ?.map((trip, index) => (
+                                <Card key={index}>
+                                  <CardContent className="p-0">
+                                    <div className="flex flex-col md:flex-row">
+                                      <div className="md:w-1/4">
+                                        <img
+                                          src={trip?.destinasi?.image}
+                                          alt={trip?.destinasi?.name}
+                                          className="w-full h-40 md:h-full object-cover"
+                                        />
                                       </div>
-
-                                      <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-4">
-                                        <div className="flex items-center mb-3 md:mb-0">
-                                          <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                                            <img
-                                              src={
-                                                "https://randomuser.me/api/portraits/men/85.jpg"
-                                              }
-                                              className="w-full h-full object-cover"
-                                            />
-                                          </div>
+                                      <div className="p-4 md:p-6 flex-1">
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-start">
                                           <div>
-                                            <div className="text-xs text-gray-500">
-                                              Pemandu
+                                            <Badge className="mb-2">
+                                              {trip.status}
+                                            </Badge>
+                                            <h3 className="font-semibold text-lg mb-1">
+                                              {trip?.destinasi?.name}
+                                            </h3>
+                                            <div className="flex items-center text-gray-500 mb-4">
+                                              <Calendar
+                                                size={14}
+                                                className="mr-1"
+                                              />
+                                              <span className="text-sm">
+                                                {trip?.createdAt}
+                                              </span>
                                             </div>
-                                            <div className="text-sm font-medium">
-                                              ari
+                                          </div>
+                                          <div className="mt-2 md:mt-0">
+                                            <div className="text-sm text-gray-500">
+                                              Total
+                                            </div>
+                                            <div className="font-bold text-lg">
+                                              Rp{" "}
+                                              {trip?.totalPrice?.toLocaleString()}
                                             </div>
                                           </div>
                                         </div>
 
-                                        <div className="flex space-x-2">
-                                          <Link
-                                            to={`/booking/${trip?.destinasi?._id}`}
-                                          >
-                                            <Button size="sm" variant="outline">
-                                              Detail
-                                            </Button>
-                                          </Link>
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-4">
+                                          <div className="flex items-center mb-3 md:mb-0">
+                                            <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
+                                              <img
+                                                src={
+                                                  "https://randomuser.me/api/portraits/men/85.jpg"
+                                                }
+                                                className="w-full h-full object-cover"
+                                              />
+                                            </div>
+                                            <div>
+                                              <div className="text-xs text-gray-500">
+                                                Pemandu
+                                              </div>
+                                              <div className="text-sm font-medium">
+                                                ari
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          <div className="flex space-x-2">
+                                            <Link to={`/booking/${trip._id}`}>
+                                              <Button
+                                                size="sm"
+                                                variant="outline"
+                                              >
+                                                Detail
+                                              </Button>
+                                            </Link>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            ))}
+                                  </CardContent>
+                                </Card>
+                              ))}
                           </div>
                         ) : (
                           <div className="text-center py-12">
@@ -409,36 +413,305 @@ const Dashboard = () => {
                           </div>
                         )}
                       </TabsContent>
-                      <TabsContent value="past">
-                        <div className="text-center py-12">
-                          <Clock
-                            size={48}
-                            className="mx-auto text-gray-300 mb-4"
-                          />
-                          <h3 className="text-lg font-medium mb-2">
-                            Belum Ada Perjalanan Selesai
-                          </h3>
-                          <p className="text-gray-500 mb-6">
-                            Perjalanan yang telah Anda selesaikan akan muncul di
-                            sini
-                          </p>
-                          <Button>Jelajahi Destinasi</Button>
-                        </div>
+                      <TabsContent value="confirmed">
+                        {trips.length > 0 ? (
+                          <div className="space-y-4">
+                            {trips
+                              ?.filter((b) => b.status === "confirmed")
+                              ?.map((trip, index) => (
+                                <Card key={index}>
+                                  <CardContent className="p-0">
+                                    <div className="flex flex-col md:flex-row">
+                                      <div className="md:w-1/4">
+                                        <img
+                                          src={trip?.destinasi?.image}
+                                          alt={trip?.destinasi?.name}
+                                          className="w-full h-40 md:h-full object-cover"
+                                        />
+                                      </div>
+                                      <div className="p-4 md:p-6 flex-1">
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-start">
+                                          <div>
+                                            <Badge className="mb-2">
+                                              {trip.status}
+                                            </Badge>
+                                            <Badge className="mb-2">
+                                              {trip.paymentStatus}
+                                            </Badge>
+                                            <h3 className="font-semibold text-lg mb-1">
+                                              {trip?.destinasi?.name}
+                                            </h3>
+                                            <div className="flex items-center text-gray-500 mb-4">
+                                              <Calendar
+                                                size={14}
+                                                className="mr-1"
+                                              />
+                                              <span className="text-sm">
+                                                {trip?.createdAt}
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="mt-2 md:mt-0">
+                                            <div className="text-sm text-gray-500">
+                                              Total
+                                            </div>
+                                            <div className="font-bold text-lg">
+                                              Rp{" "}
+                                              {trip?.totalPrice?.toLocaleString()}
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-4">
+                                          <div className="flex items-center mb-3 md:mb-0">
+                                            <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
+                                              <img
+                                                src={
+                                                  "https://randomuser.me/api/portraits/men/85.jpg"
+                                                }
+                                                className="w-full h-full object-cover"
+                                              />
+                                            </div>
+                                            <div>
+                                              <div className="text-xs text-gray-500">
+                                                Pemandu
+                                              </div>
+                                              <div className="text-sm font-medium">
+                                                ari
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          <div className="flex space-x-2">
+                                            <Link to={`/booking/${trip._id}`}>
+                                              <Button
+                                                size="sm"
+                                                variant="outline"
+                                              >
+                                                Detail
+                                              </Button>
+                                            </Link>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-12">
+                            <Calendar
+                              size={48}
+                              className="mx-auto text-gray-300 mb-4"
+                            />
+                            <h3 className="text-lg font-medium mb-2">
+                              Belum Ada Perjalanan
+                            </h3>
+                            <p className="text-gray-500 mb-6">
+                              Anda belum memiliki perjalanan mendatang
+                            </p>
+                            <Button>Jelajahi Destinasi</Button>
+                          </div>
+                        )}
+                      </TabsContent>
+                      <TabsContent value="completed">
+                        {trips.length > 0 ? (
+                          <div className="space-y-4">
+                            {trips
+                              ?.filter((b) => b.status === "completed")
+                              ?.map((trip, index) => (
+                                <Card key={index}>
+                                  <CardContent className="p-0">
+                                    <div className="flex flex-col md:flex-row">
+                                      <div className="md:w-1/4">
+                                        <img
+                                          src={trip?.destinasi?.image}
+                                          alt={trip?.destinasi?.name}
+                                          className="w-full h-40 md:h-full object-cover"
+                                        />
+                                      </div>
+                                      <div className="p-4 md:p-6 flex-1">
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-start">
+                                          <div>
+                                            <Badge className="mb-2">
+                                              {trip.status}
+                                            </Badge>
+                                            <h3 className="font-semibold text-lg mb-1">
+                                              {trip?.destinasi?.name}
+                                            </h3>
+                                            <div className="flex items-center text-gray-500 mb-4">
+                                              <Calendar
+                                                size={14}
+                                                className="mr-1"
+                                              />
+                                              <span className="text-sm">
+                                                {trip?.createdAt}
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="mt-2 md:mt-0">
+                                            <div className="text-sm text-gray-500">
+                                              Total
+                                            </div>
+                                            <div className="font-bold text-lg">
+                                              Rp{" "}
+                                              {trip?.totalPrice?.toLocaleString()}
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-4">
+                                          <div className="flex items-center mb-3 md:mb-0">
+                                            <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
+                                              <img
+                                                src={
+                                                  "https://randomuser.me/api/portraits/men/85.jpg"
+                                                }
+                                                className="w-full h-full object-cover"
+                                              />
+                                            </div>
+                                            <div>
+                                              <div className="text-xs text-gray-500">
+                                                Pemandu
+                                              </div>
+                                              <div className="text-sm font-medium">
+                                                ari
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          <div className="flex space-x-2">
+                                            <Link to={`/booking/${trip._id}`}>
+                                              <Button
+                                                size="sm"
+                                                variant="outline"
+                                              >
+                                                Detail
+                                              </Button>
+                                            </Link>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-12">
+                            <Calendar
+                              size={48}
+                              className="mx-auto text-gray-300 mb-4"
+                            />
+                            <h3 className="text-lg font-medium mb-2">
+                              Belum Ada Perjalanan
+                            </h3>
+                            <p className="text-gray-500 mb-6">
+                              Anda belum memiliki perjalanan mendatang
+                            </p>
+                            <Button>Jelajahi Destinasi</Button>
+                          </div>
+                        )}
                       </TabsContent>
                       <TabsContent value="canceled">
-                        <div className="text-center py-12">
-                          <Clock
-                            size={48}
-                            className="mx-auto text-gray-300 mb-4"
-                          />
-                          <h3 className="text-lg font-medium mb-2">
-                            Tidak Ada Perjalanan Dibatalkan
-                          </h3>
-                          <p className="text-gray-500 mb-6">
-                            Perjalanan yang dibatalkan akan muncul di sini
-                          </p>
-                          <Button>Jelajahi Destinasi</Button>
-                        </div>
+                        {trips.length > 0 ? (
+                          <div className="space-y-4">
+                            {trips
+                              ?.filter((b) => b.status === "cancelled")
+                              ?.map((trip, index) => (
+                                <Card key={index}>
+                                  <CardContent className="p-0">
+                                    <div className="flex flex-col md:flex-row">
+                                      <div className="md:w-1/4">
+                                        <img
+                                          src={trip?.destinasi?.image}
+                                          alt={trip?.destinasi?.name}
+                                          className="w-full h-40 md:h-full object-cover"
+                                        />
+                                      </div>
+                                      <div className="p-4 md:p-6 flex-1">
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-start">
+                                          <div>
+                                            <Badge className="mb-2">
+                                              {trip.status}
+                                            </Badge>
+                                            <h3 className="font-semibold text-lg mb-1">
+                                              {trip?.destinasi?.name}
+                                            </h3>
+                                            <div className="flex items-center text-gray-500 mb-4">
+                                              <Calendar
+                                                size={14}
+                                                className="mr-1"
+                                              />
+                                              <span className="text-sm">
+                                                {trip?.createdAt}
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="mt-2 md:mt-0">
+                                            <div className="text-sm text-gray-500">
+                                              Total
+                                            </div>
+                                            <div className="font-bold text-lg">
+                                              Rp{" "}
+                                              {trip?.totalPrice?.toLocaleString()}
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-4">
+                                          <div className="flex items-center mb-3 md:mb-0">
+                                            <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
+                                              <img
+                                                src={
+                                                  "https://randomuser.me/api/portraits/men/85.jpg"
+                                                }
+                                                className="w-full h-full object-cover"
+                                              />
+                                            </div>
+                                            <div>
+                                              <div className="text-xs text-gray-500">
+                                                Pemandu
+                                              </div>
+                                              <div className="text-sm font-medium">
+                                                ari
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          <div className="flex space-x-2">
+                                            <Link to={`/booking/${trip._id}`}>
+                                              <Button
+                                                size="sm"
+                                                variant="outline"
+                                              >
+                                                Detail
+                                              </Button>
+                                            </Link>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-12">
+                            <Calendar
+                              size={48}
+                              className="mx-auto text-gray-300 mb-4"
+                            />
+                            <h3 className="text-lg font-medium mb-2">
+                              Belum Ada Perjalanan
+                            </h3>
+                            <p className="text-gray-500 mb-6">
+                              Anda belum memiliki perjalanan mendatang
+                            </p>
+                            <Button>Jelajahi Destinasi</Button>
+                          </div>
+                        )}
                       </TabsContent>
                     </Tabs>
                   </div>

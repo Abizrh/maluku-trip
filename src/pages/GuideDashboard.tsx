@@ -55,6 +55,8 @@ const GuideDashboard = () => {
 
   const handleEvent = async (id, event: "cancelled" | "confirmed") => {
     const resp = await updateOrderGuide(id, event);
+
+    fetchOrderGuides();
   };
 
   return (

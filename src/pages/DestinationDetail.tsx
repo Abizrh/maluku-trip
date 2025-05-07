@@ -13,7 +13,7 @@ import {
   User,
   Users,
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { usePengelolaStore } from "@/stores/pengelolaStore";
 import { useWisatawanStore } from "@/stores/wisatawanStore";
@@ -27,8 +27,8 @@ const DestinationDetail = () => {
     getDetailDestination,
   } = usePengelolaStore();
   const { bookTrip } = useWisatawanStore();
+  const navigate = useNavigate();
 
-  console.log("detail", id);
   useEffect(() => {
     if (id) {
       getDetailDestination(id);
@@ -36,9 +36,10 @@ const DestinationDetail = () => {
   }, [getDetailDestination, id]);
 
   const bookingHandler = async () => {
-    const resp = await bookTrip({
-      destinasiId: id,
-    });
+    // const resp = await bookTrip({
+    //   destinasiId: id,
+    // });
+    navigate(`/payment/${id}`);
   };
   return (
     <div className="min-h-screen flex flex-col">

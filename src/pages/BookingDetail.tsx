@@ -26,19 +26,26 @@ const BookingDetail = () => {
     isLoading,
     getDetailDestination,
   } = usePengelolaStore();
-  const { bookTrip } = useWisatawanStore();
+  const { bookTrip, detailTrip, getBookingDetail } = useWisatawanStore();
 
   console.log("detail", id);
   useEffect(() => {
     if (id) {
-      getDetailDestination(id);
+      getBookingDetail(id);
     }
-  }, [getDetailDestination, id]);
+  }, [getBookingDetail, id]);
+
+  useEffect(() => {
+    if (detailTrip && detailTrip.destinasi?._id) {
+      console.log("detailTrip", detailTrip);
+      getDetailDestination(detailTrip.destinasi._id);
+    }
+  }, [detailTrip, getDetailDestination]);
 
   const bookingHandler = async () => {
-    const resp = await bookTrip({
-      destinasiId: id,
-    });
+    // const resp = await bookTrip({
+    //   destinasiId: id,
+    // });
   };
   return (
     <div className="min-h-screen flex flex-col">
