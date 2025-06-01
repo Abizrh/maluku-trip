@@ -203,7 +203,7 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih kategori" />
+                      <SelectValue placeholder="Pilih pemandu" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -238,83 +238,9 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
             name="maxVisitors"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Maksimal Pengunjung per Hari</FormLabel>
-                <FormControl>
-                  <Input type="number" min="1" placeholder="100" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="maxVisitors"
-            render={({ field }) => (
-              <FormItem>
                 <FormLabel>Rating</FormLabel>
                 <FormControl>
                   <Input type="number" min="1" placeholder="100" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="maxVisitors"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Fasilitas</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih kategori" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Alam">Wisata Alam</SelectItem>
-                      <SelectItem value="Budaya">Wisata Budaya</SelectItem>
-                      <SelectItem value="Pantai">Pantai</SelectItem>
-                      <SelectItem value="Gunung">Pegunungan</SelectItem>
-                      <SelectItem value="Sejarah">Sejarah</SelectItem>
-                      <SelectItem value="Kuliner">Kuliner</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="maxVisitors"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Include</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih kategori" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Alam">Wisata Alam</SelectItem>
-                      <SelectItem value="Budaya">Wisata Budaya</SelectItem>
-                      <SelectItem value="Pantai">Pantai</SelectItem>
-                      <SelectItem value="Gunung">Pegunungan</SelectItem>
-                      <SelectItem value="Sejarah">Sejarah</SelectItem>
-                      <SelectItem value="Kuliner">Kuliner</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
