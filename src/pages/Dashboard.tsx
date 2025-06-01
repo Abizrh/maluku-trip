@@ -88,48 +88,7 @@ const Dashboard = () => {
                     <BookOpen size={18} className="mr-3 text-jelajah-blue" />
                     <span>Perjalanan Saya</span>
                   </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <Heart size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Wishlist</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <MessageCircle
-                      size={18}
-                      className="mr-3 text-jelajah-blue"
-                    />
-                    <span>Pesan</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <CreditCard size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Pembayaran</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <Settings size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Pengaturan</span>
-                  </a>
                 </div>
-              </div>
-
-              <div className="bg-jelajah-blue/10 rounded-lg p-6">
-                <h3 className="font-semibold mb-2">Tingkatkan Akun</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Daftar sebagai Pemandu Lokal dan bagikan pengalaman Anda
-                </p>
-                <Button size="sm" className="w-full">
-                  Upgrade sekarang
-                </Button>
               </div>
             </div>
 
@@ -140,7 +99,6 @@ const Dashboard = () => {
                   <TabsList className="grid grid-cols-3">
                     <TabsTrigger value="overview">Ringkasan</TabsTrigger>
                     <TabsTrigger value="trips">Perjalanan</TabsTrigger>
-                    <TabsTrigger value="saved">Wishlist</TabsTrigger>
                   </TabsList>
                 </div>
 
@@ -153,39 +111,11 @@ const Dashboard = () => {
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="pt-0">
-                        <div className="text-2xl font-bold">{user.trips}</div>
+                        <div className="text-2xl font-bold">{trips.length}</div>
                         <p className="text-xs text-gray-500">
                           {user.trips > 0
                             ? "Terakhir: 2 minggu lalu"
                             : "Belum ada perjalanan"}
-                        </p>
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-sm font-medium text-gray-500">
-                          Wishlist
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="text-2xl font-bold">
-                          {user.savedDestinations}
-                        </div>
-                        <p className="text-xs text-gray-500">
-                          Destinasi tersimpan
-                        </p>
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-sm font-medium text-gray-500">
-                          Ulasan
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="text-2xl font-bold">{user.reviews}</div>
-                        <p className="text-xs text-gray-500">
-                          Ulasan diberikan
                         </p>
                       </CardContent>
                     </Card>
@@ -285,24 +215,6 @@ const Dashboard = () => {
                       <Button>Jelajahi Destinasi</Button>
                     </div>
                   )}
-
-                  <h2 className="text-xl font-semibold mb-4">
-                    Rekomendasi Untuk Anda
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {recommendedDestinations.map((destinasi) => (
-                      <DestinationCard
-                        key={destinasi.id}
-                        id={destinasi.id}
-                        name={destinasi.name}
-                        location={destinasi.location}
-                        image={destinasi.image}
-                        rating={destinasi.rating}
-                        price={destinasi.price}
-                        category={destinasi.category}
-                      />
-                    ))}
-                  </div>
                 </TabsContent>
 
                 <TabsContent value="trips">
