@@ -116,44 +116,6 @@ const ManagerDashboard = () => {
                     <Building size={18} className="mr-3 text-jelajah-blue" />
                     <span>Destinasi</span>
                   </Link>
-                  <Link
-                    to="/guide/invite"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <Users size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Pemandu Lokal</span>
-                  </Link>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <FileText size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Laporan</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <MessageCircle
-                      size={18}
-                      className="mr-3 text-jelajah-blue"
-                    />
-                    <span>Pesan</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <CreditCard size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Keuangan</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <Settings size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Pengaturan</span>
-                  </a>
                 </div>
               </div>
             </div>
@@ -163,10 +125,7 @@ const ManagerDashboard = () => {
               <Tabs defaultValue="overview">
                 <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
                   <TabsList className="grid grid-cols-4">
-                    <TabsTrigger value="overview">Ringkasan</TabsTrigger>
                     <TabsTrigger value="destinations">Destinasi</TabsTrigger>
-                    <TabsTrigger value="guides">Pemandu</TabsTrigger>
-                    <TabsTrigger value="reports">Laporan</TabsTrigger>
                   </TabsList>
                 </div>
 
