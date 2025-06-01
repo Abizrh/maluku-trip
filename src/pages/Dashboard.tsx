@@ -255,7 +255,9 @@ const Dashboard = () => {
                                   </div>
 
                                   <div className="flex space-x-2">
-                                    <Link to={`/booking/${trip._id}`}>
+                                    <Link
+                                      to={`/booking/${trip._id}?status=${trip.status}`}
+                                    >
                                       <Button size="sm" variant="outline">
                                         Detail
                                       </Button>
@@ -381,7 +383,9 @@ const Dashboard = () => {
                                           </div>
 
                                           <div className="flex space-x-2">
-                                            <Link to={`/booking/${trip._id}`}>
+                                            <Link
+                                              to={`/booking/${trip._id}?status=pending`}
+                                            >
                                               <Button
                                                 size="sm"
                                                 variant="outline"
@@ -483,7 +487,9 @@ const Dashboard = () => {
                                           </div>
 
                                           <div className="flex space-x-2">
-                                            <Link to={`/booking/${trip._id}`}>
+                                            <Link
+                                              to={`/booking/${trip._id}?status=confirmed`}
+                                            >
                                               <Button
                                                 size="sm"
                                                 variant="outline"
@@ -582,7 +588,9 @@ const Dashboard = () => {
                                           </div>
 
                                           <div className="flex space-x-2">
-                                            <Link to={`/booking/${trip._id}`}>
+                                            <Link
+                                              to={`/booking/${trip._id}?status=completed`}
+                                            >
                                               <Button
                                                 size="sm"
                                                 variant="outline"
@@ -681,7 +689,9 @@ const Dashboard = () => {
                                           </div>
 
                                           <div className="flex space-x-2">
-                                            <Link to={`/booking/${trip._id}`}>
+                                            <Link
+                                              to={`/booking/${trip._id}?status=cancelled`}
+                                            >
                                               <Button
                                                 size="sm"
                                                 variant="outline"

@@ -262,8 +262,12 @@ const BookingDetail = () => {
                     </div>
                   </div>
 
-                  <Button className="w-full mb-3" onClick={bookingHandler}>
-                    Bayar
+                  <Button
+                    className="w-full mb-3 bg-green-500"
+                    onClick={bookingHandler}
+                    disabled
+                  >
+                    Lunas
                   </Button>
                 </div>
               </div>
