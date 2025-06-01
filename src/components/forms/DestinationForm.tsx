@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,7 +57,7 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
   const { createDestination } = usePengelolaStore();
   const { fetchUsers } = useUserStore();
   const { fetchGuides, guides } = usePemanduStore();
-
+  const [manualImage, setManualImage] = useState("");
   // Initialize the form with default values or existing data for editing
   const form = useForm<z.infer<typeof destinationSchema>>({
     resolver: zodResolver(destinationSchema),
@@ -108,14 +108,30 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
   };
 
   // Handle image upload (mock implementation)
-  const handleImageUpload = () => {
+  // const handleImageUpload = () => {
+  //   setUploading(true);
+  //   // Simulate upload delay
+  //   setTimeout(() => {
+  //     // Add a placeholder image (in a real app, this would be the uploaded image)
+  //     const randomId = Math.floor(Math.random() * 90) + 10;
+  //     const newImage = `blob:https://web.whatsapp.com/210c6cc3-c658-4712-ab73-78c231fccc29`;
+  //     setImages([...images, newImage]);
+  //     setUploading(false);
+  //   }, 1000);
+  // };
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
     setUploading(true);
-    // Simulate upload delay
+
+    const imageURL = URL.createObjectURL(file);
+
     setTimeout(() => {
-      // Add a placeholder image (in a real app, this would be the uploaded image)
-      const randomId = Math.floor(Math.random() * 90) + 10;
-      const newImage = `https://images.unsplash.com/photo-15${randomId}?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YmFsaXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60`;
-      setImages([...images, newImage]);
+      setImages((prev) => [...prev, imageURL]);
       setUploading(false);
     }, 1000);
   };
@@ -266,47 +282,78 @@ export const DestinationForm = ({ initialData }: DestinationFormProps) => {
           />
         </div>
 
-        <div>
-          <FormLabel className="block mb-2">Foto Destinasi</FormLabel>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className="relative rounded-md overflow-hidden h-32"
-              >
-                <img
-                  src={image}
-                  alt={`Destination ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeImage(index)}
-                  className="absolute top-2 right-2 bg-black bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-70"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={handleImageUpload}
-              disabled={uploading}
-              className="border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-32 rounded-md hover:border-gray-400 transition-colors"
+        <FormLabel className="block mb-2">Foto Destinasi</FormLabel>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className="relative rounded-md overflow-hidden h-32"
             >
-              <Upload size={24} className="mb-2 text-gray-500" />
-              <span className="text-sm text-gray-500">
-                {uploading ? "Mengunggah..." : "Tambahkan Foto"}
-              </span>
-            </button>
-          </div>
-          {images.length === 0 && (
-            <p className="text-sm text-destructive">
-              Minimal satu foto harus diunggah
-            </p>
-          )}
+              <img
+                src={image}
+                alt={`Destination ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute top-2 right-2 bg-black bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-70"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+
+          {/* Upload via tombol */}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            className="hidden"
+            onChange={handleImageUpload}
+          />
+
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-32 rounded-md hover:border-gray-400 transition-colors"
+          >
+            <Upload size={24} className="mb-2 text-gray-500" />
+            <span className="text-sm text-gray-500">
+              {uploading ? "Mengunggah..." : "Tambahkan Foto"}
+            </span>
+          </button>
         </div>
 
+        {/* Input manual link gambar */}
+        <div className="flex items-center gap-2 mb-2">
+          <input
+            type="text"
+            value={manualImage}
+            onChange={(e) => setManualImage(e.target.value)}
+            placeholder="Tempelkan link gambar manual..."
+            className="flex-1 border rounded-md px-3 py-2 text-sm"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              if (manualImage.trim()) {
+                setImages((prev) => [...prev, manualImage.trim()]);
+                setManualImage("");
+              }
+            }}
+            className="px-3 py-2 text-sm rounded-md bg-primary text-white hover:bg-primary/90"
+          >
+            Tambahkan
+          </button>
+        </div>
+
+        {images.length === 0 && (
+          <p className="text-sm text-destructive">
+            Minimal satu foto harus diunggah
+          </p>
+        )}
         <div className="flex justify-end gap-4">
           <Button
             type="button"
