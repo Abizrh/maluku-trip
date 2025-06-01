@@ -33,7 +33,11 @@ interface WisatawanState {
   bookTrip: (
     tripData: Omit<Booking, "id" | "status" | "destinasi">,
   ) => Promise<boolean>;
-  cancelTrip: (tripId: string) => Promise<boolean>;
+  cancelTrip: (tripId: string, body: { status: string }) => Promise<boolean>;
+  updateBookingStatus: (
+    id: string,
+    body: { status: string },
+  ) => Promise<boolean>;
 }
 
 // Mock data for tourist trips
@@ -109,6 +113,31 @@ export const useWisatawanStore = create<WisatawanState>()((set, get) => ({
     }
   },
 
+  updateBookingStatus: async (id: string, body: { status: string }) => {
+    set({ isLoading: true, error: null });
+    try {
+      const resp = await apiClient.put(`/booking/myBookings/${id}`, body);
+      const { data } = resp.data;
+      console.log("Booking response:", resp);
+
+      set((state) => ({
+        trips: data,
+        isLoading: false,
+      }));
+
+      toast.success("Perjalanan telah selesai!");
+      return true;
+    } catch (error) {
+      console.error("Book trip error:", error);
+      set({
+        error: "Gagal membooking perjalanan",
+        isLoading: false,
+      });
+      toast.error("Gagal membooking perjalanan");
+      return false;
+    }
+  },
+
   // Book a new trip
   bookTrip: async (tripData) => {
     set({ isLoading: true, error: null });
@@ -116,10 +145,6 @@ export const useWisatawanStore = create<WisatawanState>()((set, get) => ({
       const resp = await apiClient.post("/booking", tripData);
       const { data } = resp.data;
       console.log("Booking response:", resp);
-      // In a real app: const response = await apiClient.post("/wisatawan/trips", tripData);
-      // Simulate API call
-      // await new Promise(resolve => setTimeout(resolve, 800)); // Fake delay
-      //
 
       set((state) => ({
         trips: data,
