@@ -122,7 +122,7 @@ const ManagerDashboard = () => {
 
             {/* Main Content */}
             <div className="flex-1">
-              <Tabs defaultValue="overview">
+              <Tabs defaultValue="destinations">
                 <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
                   <TabsList className="grid grid-cols-4">
                     <TabsTrigger value="destinations">Destinasi</TabsTrigger>
