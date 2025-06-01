@@ -47,7 +47,7 @@ const Explore = () => {
   };
 
   useEffect(() => {
-    fetchDestinations();
+    fetchDestinations({});
   }, [fetchDestinations]);
 
   return (
@@ -68,7 +68,18 @@ const Explore = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Button>Cari</Button>
+              <Button onClick={() => fetchDestinations({ name: searchQuery })}>
+                Cari
+              </Button>
+              <Button
+                className="bg-white text-black hover:bg-gray-100"
+                onClick={() => {
+                  setSearchQuery("");
+                  fetchDestinations({});
+                }}
+              >
+                Clear
+              </Button>
             </div>
           </div>
         </div>
@@ -83,7 +94,6 @@ const Explore = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="popular">Paling Populer</SelectItem>
-                  <SelectItem value="rating">Rating Tertinggi</SelectItem>
                   <SelectItem value="price-low">
                     Harga: Rendah ke Tinggi
                   </SelectItem>
@@ -131,24 +141,6 @@ const Explore = () => {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-lg mb-3">Rating</h3>
-                  <div className="space-y-2">
-                    {ratings.map((rating) => (
-                      <div key={rating} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`rating-${rating}`}
-                          checked={selectedRatings.includes(rating)}
-                          onCheckedChange={() => handleRatingChange(rating)}
-                        />
-                        <Label htmlFor={`rating-${rating}`}>
-                          {rating} & ke atas
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
                   <h3 className="font-semibold text-lg mb-3">Rentang Harga</h3>
                   <div className="space-y-4">
                     <Slider
@@ -165,7 +157,33 @@ const Explore = () => {
                   </div>
                 </div>
 
-                <Button className="w-full">Terapkan Filter</Button>
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    fetchDestinations({
+                      category: selectedCategories.join(","),
+                      rating: selectedRatings.join(","),
+                      price: priceRange,
+                    });
+                  }}
+                >
+                  Terapkan Filter
+                </Button>
+                {selectedCategories.length > 0 && (
+                  <div className="mt-4">
+                    <Button
+                      className="w-full"
+                      onClick={() => {
+                        setSelectedCategories([]);
+                        setSelectedRatings([]);
+                        setPriceRange([0, 2000000]);
+                        fetchDestinations({});
+                      }}
+                    >
+                      Clear All
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -174,7 +192,6 @@ const Explore = () => {
               <Tabs defaultValue="grid" className="mb-6">
                 <TabsList className="grid w-full max-w-xs grid-cols-2">
                   <TabsTrigger value="grid">Grid</TabsTrigger>
-                  <TabsTrigger value="map">Peta</TabsTrigger>
                 </TabsList>
                 <TabsContent value="grid">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -190,17 +207,6 @@ const Explore = () => {
                         category={destination.category}
                       />
                     ))}
-                  </div>
-                </TabsContent>
-                <TabsContent
-                  value="map"
-                  className="h-[600px] bg-gray-100 rounded-lg flex items-center justify-center"
-                >
-                  <div className="text-center p-6">
-                    <MapPin size={40} className="mx-auto text-gray-400 mb-3" />
-                    <p className="text-gray-500">
-                      Peta destinasi akan ditampilkan di sini
-                    </p>
                   </div>
                 </TabsContent>
               </Tabs>

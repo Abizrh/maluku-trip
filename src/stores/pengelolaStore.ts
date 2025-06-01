@@ -33,7 +33,7 @@ interface PengelolaState {
   guides: Guide[];
   isLoading: boolean;
   error: string | null;
-  fetchDestinations: () => Promise<Destination[]>;
+  fetchDestinations: (param) => Promise<Destination[]>;
   getDetailDestination: (param) => Promise<Destination | null>;
   fetchGuides: () => Promise<Guide[]>;
   createDestination: (
@@ -83,22 +83,44 @@ export const usePengelolaStore = create<PengelolaState>()((set, get) => ({
   error: null,
 
   // Fetch destinations managed by the user
-  fetchDestinations: async () => {
+  fetchDestinations: async (param = {}) => {
     set({ isLoading: true, error: null });
+
+    console.log("Fetching destinations with params:", param);
+    const queryParams = new URLSearchParams();
+
+    if (param.manager_id) {
+      queryParams.append("manager_id", param.manager_id);
+    }
+
+    if (param.category) {
+      queryParams.append("category", param.category);
+    }
+
+    if (param.name) {
+      queryParams.append("name", param.name);
+    }
+
+    const queryString = queryParams.toString();
+    const url = queryString ? `/destinasi?${queryString}` : "/destinasi";
+
     try {
-      const resp = await apiClient.get("/destinasi");
-      const { data } = resp.data;
+      const resp = await apiClient.get(url);
+      const { data, count } = resp.data;
+
       set({
         destinations: data,
         isLoading: false,
       });
 
+      console.log(`Fetched ${count} destinations`);
       return data;
     } catch (error) {
       console.error("Fetch destinations error:", error);
       set({
         error: "Gagal mengambil data destinasi",
         isLoading: false,
+        destinations: [],
       });
       return [];
     }

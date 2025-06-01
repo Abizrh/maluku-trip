@@ -42,8 +42,6 @@ export const useUserStore = create<UserState>()((set, get) => ({
   fetchProfile: async () => {
     set({ isLoading: true, error: null });
     try {
-      // In a real app: const response = await apiClient.get("/users/profile");
-      // Simulate API call with localStorage data
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
         const user = JSON.parse(storedUser);
@@ -54,7 +52,7 @@ export const useUserStore = create<UserState>()((set, get) => ({
         return user;
       }
       set({ isLoading: false });
-      return null;
+      return storedUser;
     } catch (error) {
       console.error("Fetch profile error:", error);
       set({

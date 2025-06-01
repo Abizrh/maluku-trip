@@ -4,8 +4,17 @@ import { Button } from "@/components/ui/button";
 import { DestinationCard } from "@/components/DestinationCard";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Search, Star, Users } from "lucide-react";
+import { usePengelolaStore } from "@/stores/pengelolaStore";
+import { useEffect, useState } from "react";
 
 const Index = () => {
+  const { fetchDestinations, destinations } = usePengelolaStore();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    fetchDestinations({});
+  }, [fetchDestinations]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -37,10 +46,26 @@ const Index = () => {
                         type="text"
                         placeholder="Cari destinasi wisata..."
                         className="bg-transparent border-none outline-none w-full text-gray-800"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
                   </div>
-                  <Button className="md:w-auto">Cari Sekarang</Button>
+                  <Button
+                    className="md:w-auto"
+                    onClick={() => {
+                      setSearchQuery("");
+                      fetchDestinations({});
+                    }}
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    className="md:w-auto"
+                    onClick={() => fetchDestinations({ name: searchQuery })}
+                  >
+                    Cari Sekarang
+                  </Button>
                 </div>
               </div>
             </div>
@@ -63,10 +88,10 @@ const Index = () => {
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {popularDestinations.map((destination) => (
+              {destinations.slice(0, 4).map((destination) => (
                 <DestinationCard
-                  key={destination.id}
-                  id={destination.id}
+                  key={destination._id}
+                  id={destination._id}
                   name={destination.name}
                   location={destination.location}
                   image={destination.image}
