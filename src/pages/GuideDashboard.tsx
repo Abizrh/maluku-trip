@@ -117,44 +117,6 @@ const GuideDashboard = () => {
                     <BookOpen size={18} className="mr-3 text-jelajah-blue" />
                     <span>Tur Saya</span>
                   </a>
-                  <Link
-                    to="/tour-schedule"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100 bg-gray-100"
-                  >
-                    <Calendar size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Jadwal Tur</span>
-                  </Link>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <Users size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Wisatawan</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <MessageCircle
-                      size={18}
-                      className="mr-3 text-jelajah-blue"
-                    />
-                    <span>Pesan</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <CreditCard size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Pendapatan</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-100"
-                  >
-                    <Settings size={18} className="mr-3 text-jelajah-blue" />
-                    <span>Pengaturan</span>
-                  </a>
                 </div>
               </div>
             </div>
@@ -164,7 +126,6 @@ const GuideDashboard = () => {
               <Tabs defaultValue="overview">
                 <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
                   <TabsList className="grid grid-cols-3">
-                    <TabsTrigger value="overview">Ringkasan</TabsTrigger>
                     <TabsTrigger value="bookings">Pemesanan</TabsTrigger>
                   </TabsList>
                 </div>
